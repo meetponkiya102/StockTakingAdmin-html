@@ -3,504 +3,1278 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Job Details, Live Device Sync & Discrepancy Reports — Admin Panel" />
-  <title>Job Details & Reports — Admin Panel</title>
+  <meta name="description" content="Stocktake Details, Real-Time Device Sync & Process Audit — Enterprise Admin Panel" />
+  <title>Stocktake Details — ABC Retail Ltd. | July 2026 Stocktake</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] } } }
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8'
+            }
+          }
+        }
+      }
     }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/variables.css" />
   <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <style>
+    @media print {
+      #sidebar, #main-header, #main-footer, .no-print {
+        display: none !important;
+      }
+      body, #main-content {
+        height: auto !important;
+        overflow: visible !important;
+        background: white !important;
+      }
+      .print-full-width {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+    /* Custom scrollbar for data tables and feeds */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
 </head>
 
-<body class="h-screen flex overflow-hidden font-sans antialiased bg-[var(--color-background)]">
+<body class="h-screen flex overflow-hidden font-sans antialiased bg-slate-50 text-slate-900">
 
-  <!-- ══════ SIDEBAR ══════ -->
+  <!-- ══════════════════════════════════════════════════════════
+       SIDEBAR NAVIGATION (Standard across admin panel)
+  ══════════════════════════════════════════════════════════ -->
   <aside id="sidebar" aria-label="Main navigation"
-    class="hidden lg:flex flex-col w-64 shrink-0 h-full
-           bg-[var(--color-sidebar-bg)] border-r border-[var(--color-sidebar-border)]">
+    class="hidden lg:flex flex-col w-64 shrink-0 h-full bg-white border-r border-slate-200 z-30">
 
-    <div class="flex items-center justify-center h-16 px-6 shrink-0 border-b border-[var(--color-border)]">
-      <span class="text-xs font-semibold tracking-widest uppercase text-[var(--color-text-muted)]
-                   border border-dashed border-[var(--color-border)] rounded px-4 py-2 select-none">LOGO</span>
+    <div class="flex items-center justify-between h-16 px-6 shrink-0 border-b border-slate-200">
+      <div class="flex items-center gap-2.5">
+        <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-sm shadow-xs">
+          ST
+        </span>
+        <div class="leading-none">
+          <span class="text-sm font-bold tracking-tight text-slate-900 block">StockTake Pro</span>
+          <span class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Enterprise OS</span>
+        </div>
+      </div>
+      <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-blue-50 text-blue-700 font-semibold border border-blue-100">v2.4</span>
     </div>
 
-    <nav class="flex-1 overflow-y-auto py-4 px-3" aria-label="Sidebar navigation">
-      <ul role="list" class="space-y-0.5">
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1" aria-label="Sidebar navigation">
+      <!-- Dashboard -->
+      <a href="dashboard.html"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
 
-        <!-- Dashboard -->
-        <li>
-          <a href="dashboard.html"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-              <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-            </svg>
-            Dashboard
-          </a>
-        </li>
+      <!-- Clients -->
+      <a href="clients-list.html"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clients
+      </a>
 
-        <!-- Clients -->
-        <li>
-          <a href="clients-list.html"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-            Clients
-          </a>
-        </li>
+      <!-- Workers -->
+      <a href="workers-list.html"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Workers
+      </a>
 
-        <!-- Workers -->
-        <li>
-          <a href="workers-list.html"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-            Workers
-          </a>
-        </li>
+      <!-- Jobs (Active Page) -->
+      <a href="jobs-list.html" aria-current="page"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold bg-blue-50 text-blue-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Jobs
+      </a>
 
-        <!-- Jobs ACTIVE -->
-        <li>
-          <a href="jobs-list.html" aria-current="page"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold
-                   bg-[var(--color-nav-active-bg)] text-[var(--color-nav-active-text)]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-            </svg>
-            Jobs
-          </a>
-        </li>
+      <!-- Reports -->
+      <a href="reports.html"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Reports
+      </a>
 
-        <!-- Products -->
-        <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            Products
-          </a>
-        </li>
-
-        <!-- Reports -->
-        <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <line x1="18" y1="20" x2="18" y2="10"/>
-              <line x1="12" y1="20" x2="12" y2="4"/>
-              <line x1="6" y1="20" x2="6" y2="14"/>
-            </svg>
-            Reports
-          </a>
-        </li>
-
-        <!-- Settings -->
-        <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
-                       a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
-                       A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
-                       l.06-.06A1.65 1.65 0 0 0 4.68 15 1.65 1.65 0 0 0 3.17 14H3a2 2 0 0 1 0-4h.09
-                       A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
-                       l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 0 1 4 0v.09
-                       a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
-                       l-.06.06A1.65 1.65 0 0 0 19.4 9 1.65 1.65 0 0 0 20.83 10H21a2 2 0 0 1 0 4h-.09
-                       a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            Settings
-          </a>
-        </li>
-
-      </ul>
+      <!-- Settings -->
+      <a href="#"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15 1.65 1.65 0 0 0 3.17 14H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9 1.65 1.65 0 0 0 20.83 10H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
     </nav>
 
-    <div class="shrink-0 border-t border-[var(--color-border)] px-4 py-4">
-      <div class="flex items-center gap-3 min-w-0">
-        <span class="flex items-center justify-center w-9 h-9 rounded-full shrink-0
-                     bg-[var(--color-primary-light)] text-[var(--color-primary)]" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
+    <!-- Admin profile footer -->
+    <div class="shrink-0 border-t border-slate-200 p-4">
+      <div class="flex items-center gap-3">
+        <span class="flex items-center justify-center w-9 h-9 rounded-full bg-blue-100 text-blue-700 font-semibold text-xs">
+          AU
         </span>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-[var(--color-text-primary)] truncate">Admin User</p>
-          <p class="text-xs text-[var(--color-text-muted)] truncate">Administrator</p>
+          <p class="text-sm font-semibold text-slate-900 truncate">Admin User</p>
+          <p class="text-xs text-slate-500 truncate">Chief Auditor</p>
         </div>
       </div>
     </div>
   </aside>
-  <!-- End Sidebar -->
 
-
-  <!-- ══════ RIGHT PANEL ══════ -->
+  <!-- ══════════════════════════════════════════════════════════
+       MAIN CONTENT WRAPPER
+  ══════════════════════════════════════════════════════════ -->
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-    <!-- Header -->
+    <!-- Top Navigation Header -->
     <header id="main-header" role="banner"
-      class="flex items-center shrink-0 h-16 px-4 sm:px-6
-             bg-[var(--color-surface)] border-b border-[var(--color-border)]">
-      <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu"
-        class="lg:hidden flex items-center justify-center w-10 h-10 mr-3 -ml-1 rounded-lg
-               text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-               transition-colors duration-150">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-      <div class="flex-1 min-w-0"></div>
-      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-        <button id="notification-btn" type="button" aria-label="View notifications"
-          class="flex items-center justify-center w-10 h-10 rounded-lg
-                 text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                 transition-colors duration-150">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-               stroke-linejoin="round" aria-hidden="true">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-          </svg>
+      class="flex items-center justify-between shrink-0 h-16 px-4 sm:px-6 bg-white border-b border-slate-200 z-20">
+      <div class="flex items-center gap-3">
+        <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu"
+          class="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-slate-500 hover:bg-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <button id="user-menu-btn" type="button" aria-label="Open user menu"
-          class="flex items-center gap-2 px-3 h-10 rounded-lg text-sm font-medium
-                 text-[var(--color-text-primary)] hover:bg-[var(--color-nav-hover-bg)]
-                 transition-colors duration-150">
-          <span class="flex items-center justify-center w-7 h-7 rounded-full shrink-0
-                       bg-[var(--color-primary-light)] text-[var(--color-primary)]" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-          </span>
-          <span class="hidden sm:block truncate max-w-[120px]">Admin User</span>
-          <svg class="hidden sm:block shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Live Sync Engine Active
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right hidden md:block">
+          <div class="text-xs font-medium text-slate-500">System Time (IST)</div>
+          <div class="text-xs font-mono font-semibold text-slate-800" id="live-clock">18 Sep 2026, 02:25:32 PM</div>
+        </div>
+        <button id="notification-btn" type="button" aria-label="View notifications"
+          class="relative flex items-center justify-center w-9 h-9 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full"></span>
         </button>
       </div>
     </header>
 
-    <!-- Main (scrollable) -->
-    <main id="main-content" class="flex-1 overflow-y-auto flex flex-col min-w-0" aria-label="Main content">
-      <section class="flex-1 p-4 sm:p-6 lg:p-8 space-y-6" aria-labelledby="page-heading">
+    <!-- Main Scrollable Body -->
+    <main id="main-content" class="flex-1 overflow-y-auto flex flex-col min-w-0 bg-slate-50/60 custom-scrollbar" aria-label="Main content">
 
-        <!-- Breadcrumb + Job Heading + Reporting Bar -->
-        <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-          <div>
-            <nav aria-label="Breadcrumb" class="mb-2">
-              <ol class="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
-                <li><a href="jobs-list.html" class="hover:text-[var(--color-primary)] transition-colors">Jobs</a></li>
-                <li aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                       stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                </li>
-                <li class="text-[var(--color-text-primary)] font-medium" aria-current="page">JOB-2026-001</li>
-              </ol>
-            </nav>
+      <div class="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1680px] w-full mx-auto">
 
-            <div class="flex flex-wrap items-center gap-3">
-              <h1 id="page-heading" class="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)] leading-tight">
-                Annual Q3 Warehouse Audit
-              </h1>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                In Progress
-              </span>
-            </div>
-            <p class="mt-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">
-              Client: <span class="font-semibold text-slate-800">Raj Warehouses Pvt. Ltd.</span> &bull; Location: <span class="text-slate-700">Plot 42, GIDC Estate, Sector 15, Gandhinagar</span>
-            </p>
-          </div>
+        <!-- ══════════════════════════════════════════════════════════
+             1. PAGE HEADER (PERSISTENT CLIENT & JOB IDENTITY)
+        ══════════════════════════════════════════════════════════ -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs relative">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            
+            <div class="space-y-2">
+              <!-- Breadcrumb + Back Button -->
+              <div class="flex items-center gap-3">
+                <a href="jobs-list.html"
+                  class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors duration-150">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                  Back to Jobs
+                </a>
+                <span class="text-slate-300">/</span>
+                <nav aria-label="Breadcrumb">
+                  <ol class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                    <li><a href="jobs-list.html" class="hover:text-blue-600 transition-colors">Jobs</a></li>
+                    <li class="text-slate-300">/</li>
+                    <li class="text-slate-900 font-semibold uppercase tracking-wider text-[11px]">Stocktake Details</li>
+                  </ol>
+                </nav>
+              </div>
 
-          <!-- ── REPORTING OPTION / EXPORT ACTIONS ────── -->
-          <div class="flex flex-wrap items-center gap-2 shrink-0">
-            <button type="button" onclick="alert('Generating Full Stocktaking Audit Report... Report PDF downloaded!')"
-              class="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-xs font-semibold shadow-xs transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              Generate Full Audit Report
-            </button>
-            <button type="button" onclick="alert('Exporting Discrepancy Excel Sheet... file downloaded!')"
-              class="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs transition-colors">
-              <svg class="text-emerald-600" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-              Export Discrepancy Sheet (.XLSX)
-            </button>
-          </div>
-        </div>
-
-        <!-- ════════════════════════════════════════════
-             STATUS BAR & REAL-TIME HARDWARE SYNC STATUS
-        ════════════════════════════════════════════ -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
-
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-            <div class="flex items-center gap-3">
-              <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
-              </span>
-              <div>
-                <div class="flex items-center gap-2">
-                  <h2 class="text-sm font-bold text-slate-900">Live Device Hardware Sync Status</h2>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                    SYNCING BATCH #084
+              <!-- Main Title: Client Name + Job Name (MUST ALWAYS REMAIN VISIBLE) -->
+              <div class="pt-1">
+                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold tracking-wide uppercase text-blue-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                  Client: <span class="text-slate-900 font-extrabold tracking-normal text-sm sm:text-base">ABC Retail Ltd.</span>
+                  <span class="text-slate-300 mx-1">|</span>
+                  <span>July 2026 Audit Session</span>
+                </div>
+                <div class="flex flex-wrap items-baseline gap-3 mt-1">
+                  <h1 id="page-heading" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    July 2026 Stocktake
+                  </h1>
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                    <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                    Status: In Progress
                   </span>
                 </div>
-                <p class="text-xs text-slate-500 mt-0.5">
-                  Handheld scanner device <strong class="text-slate-800">DEV-ST-9842X</strong> (Worker: <strong class="text-slate-800">Rahul Sharma</strong>) is transmitting physical barcode scans to server.
-                </p>
+              </div>
+
+              <!-- Metadata Pills -->
+              <div class="flex flex-wrap items-center gap-y-2 gap-x-4 pt-1 text-xs text-slate-600">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-slate-400">Job ID:</span>
+                  <span class="font-mono font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded">JOB-2026-001</span>
+                </div>
+                <span class="text-slate-300 hidden sm:inline">&bull;</span>
+                <div class="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                  <span class="text-slate-400">Created:</span>
+                  <span class="font-medium text-slate-800">18 Sep 2026</span>
+                </div>
+                <span class="text-slate-300 hidden sm:inline">&bull;</span>
+                <div class="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span class="text-slate-400">Last Activity:</span>
+                  <span class="font-semibold text-slate-900" id="header-last-activity">18 Sep 2026, 02:25 PM</span>
+                </div>
               </div>
             </div>
 
-            <div class="flex items-center gap-2 text-xs font-medium text-slate-600 self-end md:self-auto">
-              <span>Last Sync: <strong class="text-slate-900 font-mono">16:42:15 (Just now)</strong></span>
-              <button type="button" onclick="alert('Manual sync trigger sent to active worker devices!')" class="p-1.5 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-colors" title="Refresh Sync">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <!-- Top-Right Actions -->
+            <div class="flex flex-wrap items-center gap-2.5 shrink-0 self-start lg:self-center no-print">
+              <!-- Refresh Action -->
+              <button id="btn-refresh-all" type="button" onclick="handleRefreshDashboard()"
+                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-xs transition-all active:scale-95">
+                <svg id="refresh-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-500"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                Refresh
               </button>
-            </div>
-          </div>
 
-          <!-- Overall Sync Progress Bar -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-semibold text-slate-700">Physical Scan vs Expected Book Stock Progress</span>
-              <span class="font-mono font-bold text-emerald-700 text-sm">78% Synced (850 / 1,080 Items)</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
-              <div class="bg-gradient-to-r from-blue-600 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: 78%"></div>
-            </div>
-            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
-              <span>Imported Stock Book File: <strong>stock_master_q3.csv</strong></span>
-              <span>230 Items Pending Scan</span>
-            </div>
-          </div>
-
-          <!-- Active Devices List -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
-              <div class="flex items-center gap-2.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <div>
-                  <span class="font-bold text-slate-800 font-mono">DEV-ST-9842X</span>
-                  <span class="text-slate-500 block text-[11px]">Rahul Sharma &bull; Zebra TC21</span>
+              <!-- Export Dropdown -->
+              <div class="relative inline-block text-left" id="export-container">
+                <button type="button" onclick="toggleExportMenu()"
+                  class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-xs transition-all">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  Export
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="export-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-xl bg-white shadow-lg border border-slate-200 py-1.5 z-40">
+                  <a href="javascript:void(0)" onclick="exportStockData('csv')" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium">
+                    <span class="font-mono text-emerald-600 font-bold">.CSV</span> Export Data Raw
+                  </a>
+                  <a href="javascript:void(0)" onclick="exportStockData('xlsx')" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium">
+                    <span class="font-mono text-blue-600 font-bold">.XLSX</span> Excel Operational Audit
+                  </a>
+                  <a href="javascript:void(0)" onclick="window.print()" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium">
+                    <span class="font-mono text-rose-600 font-bold">.PDF</span> Printable Summary Sheet
+                  </a>
                 </div>
               </div>
-              <div class="text-right">
-                <span class="font-mono font-bold text-slate-800">850 Items</span>
-                <span class="text-[10px] text-emerald-700 font-semibold block">Active Syncing</span>
-              </div>
-            </div>
 
-            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
-              <div class="flex items-center gap-2.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-                <div>
-                  <span class="font-bold text-slate-800 font-mono">DEV-ST-4120Y</span>
-                  <span class="text-slate-500 block text-[11px]">Amit Verma &bull; Honeywell EDA51</span>
+              <!-- Print Action -->
+              <button type="button" onclick="window.print()"
+                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 shadow-xs transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                Print
+              </button>
+
+              <!-- More Actions -->
+              <div class="relative inline-block text-left" id="more-container">
+                <button type="button" onclick="toggleMoreMenu()"
+                  class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shadow-xs transition-all">
+                  <span>More</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                </button>
+                <div id="more-dropdown" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-white shadow-lg border border-slate-200 py-1.5 z-40">
+                  <a href="#variance-section" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                    Jump to Variances (42)
+                  </a>
+                  <a href="#device-sync-section" class="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+                    Manage Hardware Scanners
+                  </a>
+                  <div class="h-px bg-slate-100 my-1"></div>
+                  <button type="button" onclick="showNotification('Audit log downloaded for JOB-2026-001', 'success')" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                    Download Full Audit Log
+                  </button>
                 </div>
               </div>
-              <div class="text-right">
-                <span class="font-mono font-bold text-slate-800">0 Items</span>
-                <span class="text-[10px] text-slate-500 font-medium block">Idle / Standby</span>
-              </div>
             </div>
-          </div>
 
+          </div>
         </div>
 
-        <!-- ════════════════════════════════════════════
-             STOCK AUDIT DISCREPANCY & REPORTING SECTION
-        ════════════════════════════════════════════ -->
-        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs space-y-0">
 
-          <!-- Section Header & Filter Tabs -->
-          <div class="p-4 sm:px-5 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h3 class="text-sm font-bold text-slate-900">Stocktaking Audit & Discrepancy Report</h3>
-              <p class="text-xs text-slate-500 mt-0.5">Comparison between imported book stock quantities and physical scanned counts.</p>
+        <!-- ══════════════════════════════════════════════════════════
+             2. OVERALL STOCKTAKE SUMMARY CARDS (7 METRIC CARDS)
+        ══════════════════════════════════════════════════════════ -->
+        <section aria-labelledby="summary-cards-heading">
+          <h2 id="summary-cards-heading" class="sr-only">Overall Stocktake Summary</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4">
+
+            <!-- Card 1: TOTAL AREAS -->
+            <div class="bg-white border border-slate-200/90 rounded-xl p-4 shadow-xs hover:border-slate-300 transition-colors">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Areas</span>
+                <span class="p-1.5 rounded-lg bg-slate-100 text-slate-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg>
+                </span>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">5</div>
+              <div class="text-[11px] text-slate-500 mt-1 font-medium">Warehouse zones</div>
             </div>
 
-            <!-- Tabs -->
-            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold text-slate-600">
-              <button type="button" class="px-3 py-1.5 rounded-md bg-white text-blue-700 shadow-xs">All Items (5)</button>
-              <button type="button" class="px-3 py-1.5 rounded-md hover:bg-white/60 text-slate-600">Shortage (2)</button>
-              <button type="button" class="px-3 py-1.5 rounded-md hover:bg-white/60 text-slate-600">Excess (1)</button>
-              <button type="button" class="px-3 py-1.5 rounded-md hover:bg-white/60 text-slate-600">Matched (2)</button>
+            <!-- Card 2: TOTAL LOCATIONS -->
+            <div class="bg-white border border-slate-200/90 rounded-xl p-4 shadow-xs hover:border-slate-300 transition-colors">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Locations</span>
+                <span class="p-1.5 rounded-lg bg-slate-100 text-slate-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">28</div>
+              <div class="text-[11px] text-slate-500 mt-1 font-medium">Across all aisles</div>
+            </div>
+
+            <!-- Card 3: TOTAL ITEMS -->
+            <div class="bg-white border border-slate-200/90 rounded-xl p-4 shadow-xs hover:border-slate-300 transition-colors">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Items</span>
+                <span class="p-1.5 rounded-lg bg-blue-50 text-blue-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                </span>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">4,855</div>
+              <div class="text-[11px] text-slate-500 mt-1 font-medium">Book master count</div>
+            </div>
+
+            <!-- Card 4: SCANNED ITEMS -->
+            <div class="bg-white border border-blue-200 rounded-xl p-4 shadow-xs relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-blue-50/70 rounded-bl-full -z-0"></div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-blue-600 mb-2">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700">Scanned Items</span>
+                  <span class="p-1.5 rounded-lg bg-blue-100 text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                </div>
+                <div class="text-2xl font-extrabold text-blue-700 tracking-tight">4,120</div>
+                <div class="text-[11px] font-semibold text-emerald-600 mt-1 flex items-center gap-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+                  +245 since last sync
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5: PENDING ITEMS -->
+            <div class="bg-white border border-slate-200/90 rounded-xl p-4 shadow-xs hover:border-slate-300 transition-colors">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Pending Items</span>
+                <span class="p-1.5 rounded-lg bg-amber-50 text-amber-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                </span>
+              </div>
+              <div class="text-2xl font-extrabold text-amber-700 tracking-tight">735</div>
+              <div class="text-[11px] text-slate-500 mt-1 font-medium">15.1% remaining</div>
+            </div>
+
+            <!-- Card 6: VARIANCE -->
+            <div class="bg-white border border-rose-200/90 rounded-xl p-4 shadow-xs hover:border-rose-300 transition-colors">
+              <div class="flex items-center justify-between text-rose-600 mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-rose-700">Variance</span>
+                <span class="p-1.5 rounded-lg bg-rose-50 text-rose-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                </span>
+              </div>
+              <div class="text-2xl font-extrabold text-rose-600 tracking-tight">42</div>
+              <div class="text-[11px] text-slate-500 mt-1 font-medium">10 pending review</div>
+            </div>
+
+            <!-- Card 7: COMPLETION -->
+            <div class="bg-white border border-emerald-200 rounded-xl p-4 shadow-xs hover:border-emerald-300 transition-colors col-span-2 sm:col-span-1 lg:col-span-1">
+              <div class="flex items-center justify-between text-emerald-600 mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Completion</span>
+                <span class="p-1.5 rounded-lg bg-emerald-50 text-emerald-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+              </div>
+              <div class="text-2xl font-extrabold text-emerald-700 tracking-tight">84.8%</div>
+              <div class="text-[11px] text-slate-500 mt-1 font-medium">18 of 28 locs done</div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════════════════
+             3. OVERALL PROGRESS SECTION
+        ══════════════════════════════════════════════════════════ -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs" aria-labelledby="stocktake-progress-heading">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="stocktake-progress-heading" class="text-base font-bold text-slate-900 tracking-tight">
+                  Stocktake Progress
+                </h2>
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  On Schedule
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Real-time aggregate reconciliation across 5 warehouse zones</p>
+            </div>
+
+            <!-- Metric summary badges -->
+            <div class="flex flex-wrap items-center gap-3 text-xs">
+              <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-lg font-semibold">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                Completed Locations: <span class="font-bold">18</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1.5 rounded-lg font-semibold">
+                <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                In Progress: <span class="font-bold">6</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-lg font-semibold">
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                Pending: <span class="font-bold">4</span>
+              </div>
             </div>
           </div>
 
-          <!-- Report Table -->
+          <!-- Progress Bar & Count Info -->
+          <div class="mt-5 space-y-2">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-semibold">
+              <span class="text-slate-700 flex items-center gap-2">
+                Overall Completion
+                <span class="font-mono text-emerald-600 font-extrabold text-base">84.8%</span>
+              </span>
+              <span class="font-mono font-bold text-slate-900">
+                <span class="text-blue-600">4,120</span> / 4,855 <span class="font-normal text-slate-500 text-xs">Items Scanned</span>
+              </span>
+            </div>
+
+            <!-- Multi-segment visual bar -->
+            <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-200/80">
+              <div class="bg-gradient-to-r from-blue-500 via-emerald-500 to-emerald-600 h-full rounded-full transition-all duration-700 shadow-xs" style="width: 84.8%"></div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1 font-medium">
+              <span>Aisle count started: 09:00 AM</span>
+              <span>Estimated finish: 04:15 PM (Today)</span>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════════════════
+             4. DEVICE & SYNCHRONIZATION STATUS TABLE
+        ══════════════════════════════════════════════════════════ -->
+        <section id="device-sync-section" class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs" aria-labelledby="device-sync-heading">
+          <div class="p-5 sm:px-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <div class="p-1.5 rounded-lg bg-blue-100 text-blue-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+                </div>
+                <h2 id="device-sync-heading" class="text-base font-bold text-slate-900 tracking-tight">
+                  DEVICE & SYNCHRONIZATION STATUS
+                </h2>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">Live status of all mobile RF terminals synchronized to this stocktake job</p>
+            </div>
+
+            <div class="flex items-center gap-2 text-xs">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 font-medium">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 2 Active
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 font-medium">
+                <span class="w-2 h-2 rounded-full bg-slate-400"></span> 1 Offline
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 text-rose-700 font-medium">
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span> 1 Interrupted
+              </span>
+            </div>
+          </div>
+
+          <!-- Table -->
           <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
               <thead>
-                <tr class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
-                  <th class="py-3 px-4">SKU Code</th>
-                  <th class="py-3 px-4">Product Name</th>
-                  <th class="py-3 px-4 text-center">Book Qty (Expected)</th>
-                  <th class="py-3 px-4 text-center">Physical Scanned Qty</th>
-                  <th class="py-3 px-4 text-center">Variance Qty (+/-)</th>
-                  <th class="py-3 px-4 text-right">Variance Value (₹)</th>
-                  <th class="py-3 px-4 text-center">Audit Status</th>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold text-[11px] tracking-wider">
+                  <th class="px-5 py-3">Device ID</th>
+                  <th class="px-5 py-3">User</th>
+                  <th class="px-5 py-3">Location</th>
+                  <th class="px-5 py-3">Connection</th>
+                  <th class="px-5 py-3">Last Sync</th>
+                  <th class="px-5 py-3 text-right">Items Synced</th>
+                  <th class="px-5 py-3 text-center">Sync Status</th>
+                  <th class="px-5 py-3 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100">
-
-                <!-- Row 1: Shortage -->
-                <tr class="hover:bg-red-50/30 transition-colors">
-                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-ELEC-901</td>
-                  <td class="py-3 px-4">
-                    <span class="font-medium text-slate-900 block">Samsung 27" LED Monitor IPS</span>
-                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567891</span>
+              <tbody class="divide-y divide-slate-100 text-slate-700 font-normal">
+                
+                <!-- DEVICE-001 -->
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3.5">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      <span class="font-mono font-bold text-slate-900">DEVICE-001</span>
+                      <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono">Zebra TC26</span>
+                    </div>
                   </td>
-                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">150</td>
-                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">138</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-red-100 text-red-700 text-xs">
-                      -12 Units
+                  <td class="px-5 py-3.5 font-medium text-slate-900">John Smith</td>
+                  <td class="px-5 py-3.5">
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-medium">Warehouse A / Location 001</span>
+                  </td>
+                  <td class="px-5 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      Connected
                     </span>
                   </td>
-                  <td class="py-3 px-4 text-right font-mono font-bold text-red-600">-1,74,000.00</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700 border border-red-200">
-                      Shortage
+                  <td class="px-5 py-3.5 font-mono text-slate-600 text-xs">02:24 PM</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold text-slate-900">250</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      Synced
                     </span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-001')"
+                      class="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors">
+                      View
+                    </button>
                   </td>
                 </tr>
 
-                <!-- Row 2: Matched -->
+                <!-- DEVICE-002 -->
+                <tr class="hover:bg-slate-50/80 transition-colors bg-blue-50/20">
+                  <td class="px-5 py-3.5">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                      <span class="font-mono font-bold text-slate-900">DEVICE-002</span>
+                      <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono">Honeywell EDA51</span>
+                    </div>
+                  </td>
+                  <td class="px-5 py-3.5 font-medium text-slate-900">Mike Wilson</td>
+                  <td class="px-5 py-3.5">
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-medium">Warehouse A / Location 002</span>
+                  </td>
+                  <td class="px-5 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+                      <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                      Connected
+                    </span>
+                  </td>
+                  <td class="px-5 py-3.5 font-mono text-slate-600 text-xs">02:20 PM</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold text-slate-900">
+                    <span class="text-blue-600">180</span>
+                    <span class="text-[10px] text-slate-400 block font-normal">in transit...</span>
+                  </td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">
+                      <svg class="animate-spin w-3 h-3 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                      Syncing
+                    </span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-002')"
+                      class="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors">
+                      View
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- DEVICE-003 -->
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3.5">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                      <span class="font-mono font-bold text-slate-900">DEVICE-003</span>
+                      <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono">Datalogic Memor</span>
+                    </div>
+                  </td>
+                  <td class="px-5 py-3.5 font-medium text-slate-900">Sarah Lee</td>
+                  <td class="px-5 py-3.5">
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-medium">Warehouse A / Location 003</span>
+                  </td>
+                  <td class="px-5 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                      <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                      Offline
+                    </span>
+                  </td>
+                  <td class="px-5 py-3.5 font-mono text-slate-600 text-xs">01:45 PM</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold text-slate-900">120</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                      Completed
+                    </span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-003')"
+                      class="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+                      View
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- DEVICE-004 (FAILED SYNC WITH RETRY) -->
+                <tr class="hover:bg-rose-50/50 transition-colors bg-rose-50/20 border-l-4 border-rose-500">
+                  <td class="px-5 py-3.5">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                      <span class="font-mono font-bold text-slate-900">DEVICE-004</span>
+                      <span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 font-mono">Zebra TC26</span>
+                    </div>
+                  </td>
+                  <td class="px-5 py-3.5 font-medium text-slate-900">David Patel</td>
+                  <td class="px-5 py-3.5">
+                    <span class="px-2 py-0.5 rounded bg-rose-100/60 text-rose-800 font-medium">Warehouse B / Location 006</span>
+                  </td>
+                  <td class="px-5 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700">
+                      <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                      Disconnected
+                    </span>
+                  </td>
+                  <td class="px-5 py-3.5 font-mono text-rose-700 text-xs font-semibold">02:16 PM</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold text-rose-700">
+                    85 <span class="text-slate-400 font-normal text-xs">/ 120</span>
+                  </td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700 border border-rose-200">
+                      <svg class="w-3 h-3 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+                      Failed
+                    </span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right space-x-1.5">
+                    <button type="button" onclick="retryDeviceSync('DEVICE-004')" id="btn-retry-DEVICE-004"
+                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 shadow-xs transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                      Retry Sync
+                    </button>
+                    <button type="button" onclick="openSyncDetails('DEVICE-004')"
+                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+                      View
+                    </button>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════════════════
+             5. PROCESS LOG — MOST IMPORTANT SECTION
+        ══════════════════════════════════════════════════════════ -->
+        <section id="process-log-section" class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden" aria-labelledby="process-log-heading">
+
+          <!-- 16. ACTIVITY SUMMARY (TODAY'S ACTIVITY) -->
+          <div class="p-5 sm:px-6 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-700">
+              <div class="flex items-center gap-3">
+                <span class="p-2 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </span>
+                <div>
+                  <h2 id="process-log-heading" class="text-lg font-bold text-white tracking-tight">
+                    PROCESS LOG & OPERATIONAL AUDIT TRAIL
+                  </h2>
+                  <p class="text-xs text-slate-300 mt-0.5">
+                    Real-time transaction log from hardware barcode ingest to inventory reconciliation
+                  </p>
+                </div>
+              </div>
+
+              <!-- View toggle: Timeline vs Table -->
+              <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700 shrink-0">
+                <button type="button" id="toggle-view-timeline" onclick="switchProcessView('timeline')"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-xs transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Timeline View
+                </button>
+                <button type="button" id="toggle-view-table" onclick="switchProcessView('table')"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="9" x2="9" y1="3" y2="21"/><line x1="15" x2="15" y1="3" y2="21"/></svg>
+                  Table View
+                </button>
+              </div>
+            </div>
+
+            <!-- Today's Activity metric ribbon -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-4 text-xs">
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+                <span class="text-[11px] text-slate-400 block uppercase tracking-wider font-semibold">Devices Synced</span>
+                <span class="text-xl font-extrabold text-white mt-1 block">8</span>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+                <span class="text-[11px] text-slate-400 block uppercase tracking-wider font-semibold">Locations Updated</span>
+                <span class="text-xl font-extrabold text-white mt-1 block">12</span>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+                <span class="text-[11px] text-slate-400 block uppercase tracking-wider font-semibold">Items Received</span>
+                <span class="text-xl font-extrabold text-white mt-1 block font-mono">2,450</span>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+                <span class="text-[11px] text-slate-400 block uppercase tracking-wider font-semibold">Items Processed</span>
+                <span class="text-xl font-extrabold text-emerald-400 mt-1 block font-mono">2,438</span>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+                <span class="text-[11px] text-slate-400 block uppercase tracking-wider font-semibold">Variances Found</span>
+                <span class="text-xl font-extrabold text-amber-400 mt-1 block font-mono">12</span>
+              </div>
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3">
+                <span class="text-[11px] text-slate-400 block uppercase tracking-wider font-semibold">Sync Errors</span>
+                <span class="text-xl font-extrabold text-rose-400 mt-1 block font-mono">1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13. REAL-TIME UPDATE BEHAVIOUR & ACTIVE SYNC BANNERS -->
+          <div class="p-4 bg-slate-50 border-b border-slate-200 space-y-3">
+            
+            <!-- Live Active Sync Banner (DEVICE-002 currently syncing) -->
+            <div id="live-sync-banner" class="bg-white border border-blue-200 rounded-xl p-4 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="flex items-start sm:items-center gap-3">
+                <div class="p-2 rounded-xl bg-blue-50 text-blue-600 shrink-0">
+                  <svg class="animate-spin w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                </div>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                      Live Hardware Synchronization in Progress
+                    </span>
+                    <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-800 font-bold border border-blue-100">DEVICE-002</span>
+                    <span class="text-xs text-slate-500">&bull; Mike Wilson &bull; Warehouse A / Location 002</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    Streaming barcode package chunk 4 of 8. Validating master GTIN checksums.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Mini Progress Bar -->
+              <div class="flex items-center gap-4 shrink-0">
+                <div class="space-y-1 w-44">
+                  <div class="flex justify-between text-xs font-mono">
+                    <span class="text-slate-600">Records:</span>
+                    <span class="font-bold text-slate-900">145 / 250</span>
+                  </div>
+                  <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
+                    <div class="bg-blue-600 h-full rounded-full transition-all duration-300" style="width: 58%"></div>
+                  </div>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                  58%
+                </span>
+              </div>
+            </div>
+
+            <!-- 9. FAILED SYNC ALERT CALLOUT (DEVICE-004) -->
+            <div id="failed-sync-banner" class="bg-rose-50/80 border border-rose-200 rounded-xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <div class="p-2 rounded-xl bg-rose-100 text-rose-700 shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                </div>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-bold text-rose-800 uppercase tracking-wide">Synchronization Failed</span>
+                    <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-rose-200 text-rose-900 font-bold">DEVICE-004</span>
+                    <span class="text-xs text-rose-700">&bull; David Patel &bull; Warehouse B / Location 006</span>
+                  </div>
+                  <p class="text-xs text-rose-800 mt-1 font-medium">
+                    Started 02:15 PM &bull; Failed 02:16 PM &bull; Records Received: 120, Processed: 85.
+                    <span class="font-bold underline ml-1">Error: Connection interrupted while uploading records.</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="shrink-0 flex items-center gap-2">
+                <button type="button" onclick="retryDeviceSync('DEVICE-004')"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                  Retry Sync
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 11. FILTER PROCESS LOG TOOLBAR -->
+          <div class="p-4 border-b border-slate-200 bg-white">
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-3">
+              
+              <!-- Search and Filters Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2 flex-1">
+                
+                <!-- Search -->
+                <div class="relative lg:col-span-2">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+                  <input type="text" id="filter-search" oninput="applyProcessFilters()" placeholder="Search process events, records, IDs…"
+                    class="w-full h-8 pl-8 pr-3 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" />
+                </div>
+
+                <!-- Filter: Device -->
+                <div>
+                  <select id="filter-device" onchange="applyProcessFilters()"
+                    class="w-full h-8 px-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Devices</option>
+                    <option value="DEVICE-001">DEVICE-001</option>
+                    <option value="DEVICE-002">DEVICE-002</option>
+                    <option value="DEVICE-003">DEVICE-003</option>
+                    <option value="DEVICE-004">DEVICE-004</option>
+                  </select>
+                </div>
+
+                <!-- Filter: User -->
+                <div>
+                  <select id="filter-user" onchange="applyProcessFilters()"
+                    class="w-full h-8 px-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Users</option>
+                    <option value="John Smith">John Smith</option>
+                    <option value="Mike Wilson">Mike Wilson</option>
+                    <option value="Sarah Lee">Sarah Lee</option>
+                    <option value="David Patel">David Patel</option>
+                  </select>
+                </div>
+
+                <!-- Filter: Location / Area -->
+                <div>
+                  <select id="filter-location" onchange="applyProcessFilters()"
+                    class="w-full h-8 px-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Locations</option>
+                    <option value="Location 001">Location 001 (Warehouse A)</option>
+                    <option value="Location 002">Location 002 (Warehouse A)</option>
+                    <option value="Location 003">Location 003 (Warehouse A)</option>
+                    <option value="Location 004">Location 004 (Warehouse B)</option>
+                    <option value="Location 006">Location 006 (Warehouse B)</option>
+                  </select>
+                </div>
+
+                <!-- Filter: Event Type -->
+                <div>
+                  <select id="filter-event-type" onchange="applyProcessFilters()"
+                    class="w-full h-8 px-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Event Types</option>
+                    <option value="Device Connected">Device Connected</option>
+                    <option value="Sync Started">Sync Started</option>
+                    <option value="Data Received">Data Received</option>
+                    <option value="Validation">Validation Completed</option>
+                    <option value="Database Updated">Database Updated</option>
+                    <option value="Sync Completed">Sync Completed</option>
+                    <option value="Sync Failed">Sync Failed</option>
+                    <option value="Location Completed">Location Completed</option>
+                  </select>
+                </div>
+
+                <!-- Filter: Status -->
+                <div>
+                  <select id="filter-status" onchange="applyProcessFilters()"
+                    class="w-full h-8 px-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Statuses</option>
+                    <option value="Completed">Success / Completed</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Warning">Warning / Variance</option>
+                    <option value="Failed">Failed</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <!-- Action buttons: Clear Filters & Refresh Stamp -->
+              <div class="flex items-center gap-3 shrink-0 self-end xl:self-center">
+                <button type="button" onclick="clearProcessFilters()"
+                  class="h-8 px-3 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                  Clear Filters
+                </button>
+                <div class="text-[11px] text-slate-500 font-mono hidden sm:block">
+                  Last updated: <span id="process-last-updated" class="font-bold text-slate-700">02:25:32 PM</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════════════════════════════
+               PROCESS LOG VIEW 1: TIMELINE VIEW (DEFAULT)
+          ══════════════════════════════════════════════════════════ -->
+          <div id="process-timeline-container" class="p-5 sm:p-6 space-y-6">
+            <div class="relative pl-6 sm:pl-8 border-l-2 border-slate-200 space-y-8 ml-3 sm:ml-4" id="timeline-events-wrapper">
+
+              <!-- EVENT 1: Sync Completed (DEVICE-001) -->
+              <div class="timeline-event relative" data-event-type="Sync Completed" data-status="Completed" data-device="DEVICE-001" data-user="John Smith" data-location="Location 001">
+                <!-- Node icon -->
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:25:32 PM</span>
+                      <h3 class="text-sm font-bold text-slate-900">Device Sync Completed</h3>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        Status: Completed
+                      </span>
+                    </div>
+                    <button type="button" onclick="openSyncDetails('DEVICE-001')"
+                      class="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-1 self-start sm:self-auto">
+                      View Sync Details &rarr;
+                    </button>
+                  </div>
+
+                  <!-- Details Badges -->
+                  <div class="flex flex-wrap items-center gap-2 mt-2.5 text-xs">
+                    <span class="font-mono font-semibold bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded">Device: DEVICE-001</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">User: John Smith</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">Warehouse A / Location 001</span>
+                  </div>
+
+                  <p class="text-xs text-slate-600 mt-2 font-medium">
+                    250 items received &bull; 250 records processed &bull; 0 fatal errors &bull; Database commit finalized.
+                  </p>
+
+                  <!-- 7. SYNC PROCESS VISUALIZATION PIPELINE WIDGET -->
+                  <div class="mt-4 pt-3 border-t border-slate-100">
+                    <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Sync Process Journey</div>
+                    <div class="flex flex-wrap items-center gap-2 text-xs font-medium">
+                      <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md">
+                        ✓ Connected
+                      </span>
+                      <span class="text-slate-300">&rarr;</span>
+                      <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md">
+                        ✓ Sync Started
+                      </span>
+                      <span class="text-slate-300">&rarr;</span>
+                      <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md">
+                        ✓ 250 Records Received
+                      </span>
+                      <span class="text-slate-300">&rarr;</span>
+                      <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md">
+                        ✓ Data Validated
+                      </span>
+                      <span class="text-slate-300">&rarr;</span>
+                      <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md">
+                        ✓ 250 Processed
+                      </span>
+                      <span class="text-slate-300">&rarr;</span>
+                      <span class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-md">
+                        ✓ Database Updated
+                      </span>
+                      <span class="text-slate-300">&rarr;</span>
+                      <span class="inline-flex items-center gap-1 text-emerald-800 bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-md font-bold">
+                        ✓ Sync Completed (00:01:42)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- EVENT 2: Database Updated (14. DATABASE UPDATE PROCESS) -->
+              <div class="timeline-event relative" data-event-type="Database Updated" data-status="Completed" data-device="DEVICE-001" data-user="John Smith" data-location="Location 001">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:24:18 PM</span>
+                    <h3 class="text-sm font-bold text-slate-900">Database Updated</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                      Status: Committed
+                    </span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                    <span class="font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">DEVICE-001</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">Location 001</span>
+                  </div>
+                  <div class="mt-2.5 bg-slate-50 border border-slate-200/80 rounded-lg p-3 text-xs text-slate-700 space-y-1">
+                    <p class="font-semibold text-slate-900 flex items-center gap-1.5">
+                      <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      248 item records successfully written to central inventory master table.
+                    </p>
+                    <p class="text-amber-700 font-medium flex items-center gap-1.5">
+                      <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                      2 records require variance review (Variance ledger updated).
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- EVENT 3: Data Validation Completed -->
+              <div class="timeline-event relative" data-event-type="Validation" data-status="Completed" data-device="DEVICE-001" data-user="System" data-location="Location 001">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:23:42 PM</span>
+                    <h3 class="text-sm font-bold text-slate-900">Data Validation Completed</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Status: Completed
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-2 font-medium">
+                    250 records validated against master catalog &bull; <span class="text-emerald-700 font-semibold">248 matched cleanly</span> &bull; <span class="text-amber-700 font-semibold">2 variance records detected</span>.
+                  </p>
+                </div>
+              </div>
+
+              <!-- EVENT 4: Stocktake Data Received -->
+              <div class="timeline-event relative" data-event-type="Data Received" data-status="Processing" data-device="DEVICE-001" data-user="John Smith" data-location="Location 001">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:22:50 PM</span>
+                    <h3 class="text-sm font-bold text-slate-900">Stocktake Data Received</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                      Status: Received
+                    </span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                    <span class="font-mono font-semibold bg-slate-100 text-slate-800 px-2 py-0.5 rounded">Device: DEVICE-001</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">Location: Location 001</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-2 font-medium">
+                    Binary barcode payload verified. 250 item records received from hardware buffer.
+                  </p>
+                </div>
+              </div>
+
+              <!-- EVENT 5: Sync Started -->
+              <div class="timeline-event relative" data-event-type="Sync Started" data-status="Processing" data-device="DEVICE-001" data-user="John Smith" data-location="Location 001">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:22:10 PM</span>
+                    <h3 class="text-sm font-bold text-slate-900">Sync Started</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                      Status: Processing
+                    </span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                    <span class="font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">DEVICE-001</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">User: John Smith</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-2 font-medium">
+                    Batch handshake initialized. Handheld scanner upload request authorized.
+                  </p>
+                </div>
+              </div>
+
+              <!-- EVENT 6: Device Connected -->
+              <div class="timeline-event relative" data-event-type="Device Connected" data-status="Completed" data-device="DEVICE-001" data-user="John Smith" data-location="Location 001">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" x2="12.01" y1="20" y2="20"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:21:58 PM</span>
+                    <h3 class="text-sm font-bold text-slate-900">Device Connected</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Status: Connected
+                    </span>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                    <span class="font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">DEVICE-001</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">User: John Smith</span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">Location 001</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-2 font-medium">
+                    Device successfully authenticated via TLS 1.3 to Stocktake Sync Gateway.
+                  </p>
+                </div>
+              </div>
+
+              <!-- EVENT 7: Sync Failed (DEVICE-004) -->
+              <div class="timeline-event relative" data-event-type="Sync Failed" data-status="Failed" data-device="DEVICE-004" data-user="David Patel" data-location="Location 006">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-rose-100 text-rose-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+                </span>
+
+                <div class="bg-rose-50/50 border border-rose-200 rounded-xl p-4 sm:p-5 shadow-xs">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="font-mono text-xs font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">02:16:12 PM</span>
+                      <h3 class="text-sm font-bold text-rose-900">SYNC FAILED</h3>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200">
+                        Status: Failed
+                      </span>
+                    </div>
+                    <button type="button" onclick="retryDeviceSync('DEVICE-004')"
+                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs self-start sm:self-auto">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                      Retry Sync
+                    </button>
+                  </div>
+
+                  <div class="flex flex-wrap items-center gap-2 mt-2 text-xs">
+                    <span class="font-mono font-semibold bg-rose-100 text-rose-800 px-2 py-0.5 rounded">Device: DEVICE-004</span>
+                    <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-medium">User: David Patel</span>
+                    <span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-medium">Location: Location 006</span>
+                  </div>
+
+                  <div class="mt-2.5 text-xs text-rose-900 space-y-1">
+                    <p class="font-semibold">Started: 02:15 PM &bull; Failed: 02:16 PM</p>
+                    <p>Records Received: <span class="font-mono font-bold">120</span> &bull; Records Processed: <span class="font-mono font-bold">85</span></p>
+                    <p class="font-bold text-rose-700 bg-white/80 p-2 rounded border border-rose-200 inline-block mt-1">
+                      Error: Connection interrupted while uploading records.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- EVENT 8: Location Completed -->
+              <div class="timeline-event relative" data-event-type="Location Completed" data-status="Completed" data-device="DEVICE-003" data-user="Sarah Lee" data-location="Location 004">
+                <span class="absolute -left-[35px] sm:-left-[43px] top-1 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 ring-4 ring-white shadow-xs">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-colors">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">02:10:00 PM</span>
+                    <h3 class="text-sm font-bold text-slate-900">Location Completed: Warehouse B / Location 004</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      100% Reconciled
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-2 font-medium">
+                    All 300 expected units successfully accounted for with 0 open discrepancies. Location lock activated.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ══════════════════════════════════════════════════════════
+               PROCESS LOG VIEW 2: TABLE VIEW (TOGGLEABLE)
+          ══════════════════════════════════════════════════════════ -->
+          <div id="process-table-container" class="hidden overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold text-[11px] tracking-wider">
+                  <th class="px-5 py-3">Time</th>
+                  <th class="px-5 py-3">Event</th>
+                  <th class="px-5 py-3">Device</th>
+                  <th class="px-5 py-3">User</th>
+                  <th class="px-5 py-3">Area / Location</th>
+                  <th class="px-5 py-3 text-right">Records</th>
+                  <th class="px-5 py-3 text-center">Status</th>
+                  <th class="px-5 py-3 text-right">Details</th>
+                </tr>
+              </thead>
+              <tbody id="process-table-body" class="divide-y divide-slate-100 text-slate-700">
+                
                 <tr class="hover:bg-slate-50 transition-colors">
-                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-ELEC-902</td>
-                  <td class="py-3 px-4">
-                    <span class="font-medium text-slate-900 block">Logitech MX Master 3S Wireless Mouse</span>
-                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567892</span>
+                  <td class="px-5 py-3.5 font-mono text-xs font-bold text-slate-800">02:25:32 PM</td>
+                  <td class="px-5 py-3.5 font-semibold text-slate-900">Device Sync Completed</td>
+                  <td class="px-5 py-3.5 font-mono text-xs text-blue-700 font-bold">DEVICE-001</td>
+                  <td class="px-5 py-3.5 font-medium">John Smith</td>
+                  <td class="px-5 py-3.5 text-xs text-slate-600">Warehouse A / Location 001</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold">250</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Completed</span>
                   </td>
-                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">300</td>
-                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">300</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-blue-50 text-blue-700 text-xs">
-                      0 (Matched)
-                    </span>
-                  </td>
-                  <td class="py-3 px-4 text-right font-mono text-slate-600">0.00</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      Matched
-                    </span>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-001')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs">View</button>
                   </td>
                 </tr>
 
-                <!-- Row 3: Excess -->
-                <tr class="hover:bg-emerald-50/30 transition-colors">
-                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-CABL-104</td>
-                  <td class="py-3 px-4">
-                    <span class="font-medium text-slate-900 block">Cat6 Ethernet Patch Cable 5m</span>
-                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567893</span>
-                  </td>
-                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">500</td>
-                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">508</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-emerald-100 text-emerald-800 text-xs">
-                      +8 Units
-                    </span>
-                  </td>
-                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">+2,800.00</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                      Excess
-                    </span>
-                  </td>
-                </tr>
-
-                <!-- Row 4: Shortage -->
-                <tr class="hover:bg-red-50/30 transition-colors">
-                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-STOR-512</td>
-                  <td class="py-3 px-4">
-                    <span class="font-medium text-slate-900 block">SanDisk Extreme 1TB NVMe SSD</span>
-                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567894</span>
-                  </td>
-                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">200</td>
-                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">196</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-red-100 text-red-700 text-xs">
-                      -4 Units
-                    </span>
-                  </td>
-                  <td class="py-3 px-4 text-right font-mono font-bold text-red-600">-36,800.00</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700 border border-red-200">
-                      Shortage
-                    </span>
-                  </td>
-                </tr>
-
-                <!-- Row 5: Matched -->
                 <tr class="hover:bg-slate-50 transition-colors">
-                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-POWR-201</td>
-                  <td class="py-3 px-4">
-                    <span class="font-medium text-slate-900 block">APC Smart-UPS 1000VA Battery Backup</span>
-                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567895</span>
+                  <td class="px-5 py-3.5 font-mono text-xs font-bold text-slate-800">02:24:18 PM</td>
+                  <td class="px-5 py-3.5 font-semibold text-slate-900">Database Updated</td>
+                  <td class="px-5 py-3.5 font-mono text-xs text-blue-700 font-bold">DEVICE-001</td>
+                  <td class="px-5 py-3.5 font-medium">John Smith</td>
+                  <td class="px-5 py-3.5 text-xs text-slate-600">Warehouse A / Location 001</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold">248 (+2 var)</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">Committed</span>
                   </td>
-                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">100</td>
-                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">100</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-blue-50 text-blue-700 text-xs">
-                      0 (Matched)
-                    </span>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-001')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs">View</button>
                   </td>
-                  <td class="py-3 px-4 text-right font-mono text-slate-600">0.00</td>
-                  <td class="py-3 px-4 text-center">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      Matched
-                    </span>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="px-5 py-3.5 font-mono text-xs font-bold text-slate-800">02:23:42 PM</td>
+                  <td class="px-5 py-3.5 font-semibold text-slate-900">Data Validation Completed</td>
+                  <td class="px-5 py-3.5 font-mono text-xs text-blue-700 font-bold">DEVICE-001</td>
+                  <td class="px-5 py-3.5 font-medium text-slate-500">System Gateway</td>
+                  <td class="px-5 py-3.5 text-xs text-slate-600">Warehouse A / Location 001</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold">250</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">Validated</span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-001')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs">View</button>
+                  </td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="px-5 py-3.5 font-mono text-xs font-bold text-slate-800">02:22:50 PM</td>
+                  <td class="px-5 py-3.5 font-semibold text-slate-900">Stocktake Data Received</td>
+                  <td class="px-5 py-3.5 font-mono text-xs text-blue-700 font-bold">DEVICE-001</td>
+                  <td class="px-5 py-3.5 font-medium">John Smith</td>
+                  <td class="px-5 py-3.5 text-xs text-slate-600">Warehouse A / Location 001</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold">250</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">Received</span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-001')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs">View</button>
+                  </td>
+                </tr>
+
+                <tr class="hover:bg-rose-50/60 transition-colors bg-rose-50/20">
+                  <td class="px-5 py-3.5 font-mono text-xs font-bold text-rose-700">02:16:12 PM</td>
+                  <td class="px-5 py-3.5 font-semibold text-rose-900">Sync Failed</td>
+                  <td class="px-5 py-3.5 font-mono text-xs text-rose-700 font-bold">DEVICE-004</td>
+                  <td class="px-5 py-3.5 font-medium">David Patel</td>
+                  <td class="px-5 py-3.5 text-xs text-slate-600">Warehouse B / Location 006</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold text-rose-700">85 (120 rcvd)</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700 border border-rose-200">Failed</span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right space-x-1">
+                    <button type="button" onclick="retryDeviceSync('DEVICE-004')" class="text-rose-600 hover:text-rose-800 font-bold text-xs">Retry</button>
+                  </td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="px-5 py-3.5 font-mono text-xs font-bold text-slate-800">02:10:00 PM</td>
+                  <td class="px-5 py-3.5 font-semibold text-slate-900">Location Completed</td>
+                  <td class="px-5 py-3.5 font-mono text-xs text-slate-600 font-bold">DEVICE-003</td>
+                  <td class="px-5 py-3.5 font-medium">Sarah Lee</td>
+                  <td class="px-5 py-3.5 text-xs text-slate-600">Warehouse B / Location 004</td>
+                  <td class="px-5 py-3.5 text-right font-mono font-bold">300</td>
+                  <td class="px-5 py-3.5 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">100% Done</span>
+                  </td>
+                  <td class="px-5 py-3.5 text-right">
+                    <button type="button" onclick="openSyncDetails('DEVICE-003')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs">View</button>
                   </td>
                 </tr>
 
@@ -508,30 +1282,852 @@
             </table>
           </div>
 
-          <!-- Footer Summary -->
-          <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
-            <span>Discrepancy Summary: <strong>2 Shortages (-16 units)</strong>, <strong>1 Excess (+8 units)</strong></span>
-            <span class="font-semibold text-red-600">Net Stock Value Variance: -₹2,08,000.00</span>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════════════════
+             10. AREA & LOCATION STATUS
+        ══════════════════════════════════════════════════════════ -->
+        <section id="area-location-section" class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs" aria-labelledby="area-location-heading">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+            <div>
+              <h2 id="area-location-heading" class="text-base font-bold text-slate-900 tracking-tight">
+                AREA & LOCATION STATUS
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Progress and item distribution broken down by warehouse zone</p>
+            </div>
+            <div class="text-xs font-medium text-slate-600">
+              Showing 2 of 5 Warehouse Areas
+            </div>
           </div>
 
-        </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-5">
 
-      </section>
+            <!-- Warehouse A -->
+            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/40 space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-100 text-blue-700 font-bold text-xs">A</span>
+                  <h3 class="font-bold text-sm text-slate-900">Warehouse A</h3>
+                </div>
+                <span class="text-xs font-mono font-semibold text-slate-600">3 Locations</span>
+              </div>
+
+              <!-- Location 001 -->
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold text-xs text-slate-900">Location 001</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      ✓ Completed
+                    </span>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-emerald-700">100%</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Scanned: <strong class="text-slate-900">250 / 250</strong></span>
+                  <span class="text-slate-400">Variance: 0 &bull; Last sync: 02:24 PM</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-emerald-500 h-full rounded-full" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <!-- Location 002 -->
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold text-xs text-slate-900">Location 002</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                      In Progress
+                    </span>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-blue-700">72%</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Scanned: <strong class="text-slate-900">180 / 250</strong></span>
+                  <span class="text-amber-700 font-medium">Variance: 2 &bull; Last sync: 02:20 PM</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-blue-600 h-full rounded-full" style="width: 72%"></div>
+                </div>
+              </div>
+
+              <!-- Location 003 -->
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold text-xs text-slate-900">Location 003</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                      Pending
+                    </span>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-slate-400">0%</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Scanned: <strong class="text-slate-900">0 / 180</strong></span>
+                  <span class="text-slate-400">Awaiting worker assignment</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-slate-300 h-full rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Warehouse B -->
+            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/40 space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 font-bold text-xs">B</span>
+                  <h3 class="font-bold text-sm text-slate-900">Warehouse B</h3>
+                </div>
+                <span class="text-xs font-mono font-semibold text-slate-600">3 Locations</span>
+              </div>
+
+              <!-- Location 004 -->
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold text-xs text-slate-900">Location 004</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      ✓ Completed
+                    </span>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-emerald-700">100%</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Scanned: <strong class="text-slate-900">300 / 300</strong></span>
+                  <span class="text-slate-400">Variance: 1 &bull; Last sync: 02:10 PM</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-emerald-500 h-full rounded-full" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <!-- Location 005 -->
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold text-xs text-slate-900">Location 005</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                      In Progress
+                    </span>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-blue-700">73.3%</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Scanned: <strong class="text-slate-900">220 / 300</strong></span>
+                  <span class="text-amber-700 font-medium">Variance: 3 &bull; Last sync: 01:55 PM</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-blue-600 h-full rounded-full" style="width: 73.3%"></div>
+                </div>
+              </div>
+
+              <!-- Location 006 (Warning/Interrupted) -->
+              <div class="bg-white border border-rose-200 rounded-xl p-3.5 shadow-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="font-semibold text-xs text-slate-900">Location 006</span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      ⚠️ Sync Interrupted
+                    </span>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-rose-700">30.4%</span>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                  <span>Scanned: <strong class="text-slate-900">85 / 280</strong></span>
+                  <span class="text-rose-600 font-semibold">Failed at 02:16 PM</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-rose-500 h-full rounded-full" style="width: 30.4%"></div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════════════════
+             15. VARIANCE SUMMARY SECTION
+        ══════════════════════════════════════════════════════════ -->
+        <section id="variance-section" class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-xs" aria-labelledby="variance-heading">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="variance-heading" class="text-base font-bold text-slate-900 tracking-tight">
+                  VARIANCE SUMMARY
+                </h2>
+                <span class="px-2 py-0.5 rounded text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                  42 Variances Detected
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Discrepancy reconciliation between expected book master and scanned barcode inventory</p>
+            </div>
+
+            <button type="button" onclick="openVarianceModal()"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-colors shadow-xs self-start sm:self-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+              View Variances
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mt-5">
+            <!-- Total Variances -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Total Variances</span>
+              <span class="text-2xl font-extrabold text-slate-900 mt-1 block font-mono">42</span>
+              <span class="text-[11px] text-slate-500 mt-0.5 block">0.86% error rate</span>
+            </div>
+
+            <!-- Quantity Short -->
+            <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/40">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-rose-700 block">Quantity Short</span>
+              <span class="text-2xl font-extrabold text-rose-600 mt-1 block font-mono">18</span>
+              <span class="text-[11px] text-rose-600 mt-0.5 block font-medium">-18 items missing</span>
+            </div>
+
+            <!-- Quantity Excess -->
+            <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/40">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700 block">Quantity Excess</span>
+              <span class="text-2xl font-extrabold text-blue-600 mt-1 block font-mono">15</span>
+              <span class="text-[11px] text-blue-600 mt-0.5 block font-medium">+15 items unrecorded</span>
+            </div>
+
+            <!-- Unmatched Barcodes -->
+            <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/40">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 block">Unmatched</span>
+              <span class="text-2xl font-extrabold text-amber-600 mt-1 block font-mono">9</span>
+              <span class="text-[11px] text-amber-700 mt-0.5 block font-medium">Barcode not in master</span>
+            </div>
+
+            <!-- Pending Review -->
+            <div class="p-4 rounded-xl border border-indigo-200 bg-indigo-50/40 col-span-2 sm:col-span-1">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-700 block">Pending Review</span>
+              <span class="text-2xl font-extrabold text-indigo-600 mt-1 block font-mono">10</span>
+              <span class="text-[11px] text-indigo-700 mt-0.5 block font-medium">Requires supervisor sign-off</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
 
       <!-- Footer -->
       <footer id="main-footer" role="contentinfo"
-        class="shrink-0 border-t border-[var(--color-border)] bg-[var(--color-surface)]
-               px-4 sm:px-6 lg:px-8 py-4">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between
-                    gap-1 sm:gap-0 text-xs text-[var(--color-text-muted)]">
-          <span>© 2026 Admin Panel. All rights reserved.</span>
-          <span>Version 1.0.0</span>
+        class="shrink-0 border-t border-slate-200 bg-white px-4 sm:px-6 lg:px-8 py-4 mt-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-xs text-slate-500">
+          <span>Client: <strong class="text-slate-800">ABC Retail Ltd.</strong> &bull; Job: <strong class="text-slate-800">July 2026 Stocktake (JOB-2026-001)</strong></span>
+          <span>StockTake Pro Enterprise &bull; Version 2.4.0</span>
         </div>
       </footer>
+
     </main>
 
   </div>
 
+
+  <!-- ══════════════════════════════════════════════════════════
+       8. SYNC DETAILS SLIDE-OVER DRAWER
+  ══════════════════════════════════════════════════════════ -->
+  <div id="sync-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300" onclick="closeSyncDetails()"></div>
+
+    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div class="pointer-events-auto w-screen max-w-xl bg-white shadow-2xl flex flex-col h-full border-l border-slate-200">
+        
+        <!-- Drawer Header -->
+        <div class="p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30" id="drawer-device-badge">
+                DEVICE-001
+              </span>
+              <span class="text-xs text-slate-400" id="drawer-sync-id">SYNC-20260918-00251</span>
+            </div>
+            <h2 id="slide-over-title" class="text-lg font-bold text-white mt-1">
+              Synchronization Details
+            </h2>
+          </div>
+          <button type="button" onclick="closeSyncDetails()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- Drawer Content (Scrollable) -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+
+          <!-- Core Metadata Card -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2.5">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <span class="text-slate-400 block font-medium">Assigned Worker</span>
+                <span class="font-bold text-slate-800 text-sm" id="drawer-user">John Smith</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block font-medium">Location</span>
+                <span class="font-bold text-slate-800 text-sm" id="drawer-location">Warehouse A / Location 001</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block font-medium">Started At</span>
+                <span class="font-mono font-semibold text-slate-700" id="drawer-started">02:22:15 PM</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block font-medium">Completed At</span>
+                <span class="font-mono font-semibold text-slate-700" id="drawer-completed">02:23:57 PM</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block font-medium">Elapsed Duration</span>
+                <span class="font-mono font-bold text-emerald-700 text-sm" id="drawer-duration">1m 42s</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block font-medium">Overall Status</span>
+                <span class="inline-flex items-center gap-1 font-bold text-emerald-700" id="drawer-status">
+                  ✓ Successfully Reconciled
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaction Records Grid (Prompt Section 8) -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Sync Records Breakdown</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-slate-400 block font-medium">Records Received</span>
+                <span class="text-xl font-bold font-mono text-slate-900 mt-1 block" id="drawer-records-received">250</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-slate-400 block font-medium">Records Processed</span>
+                <span class="text-xl font-bold font-mono text-blue-600 mt-1 block" id="drawer-records-processed">250</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-slate-400 block font-medium">Records Updated</span>
+                <span class="text-xl font-bold font-mono text-emerald-600 mt-1 block" id="drawer-records-updated">248</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-slate-400 block font-medium">Records Skipped</span>
+                <span class="text-xl font-bold font-mono text-slate-500 mt-1 block" id="drawer-records-skipped">0</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-slate-400 block font-medium">Duplicates</span>
+                <span class="text-xl font-bold font-mono text-slate-500 mt-1 block" id="drawer-duplicates">0</span>
+              </div>
+              <div class="p-3 bg-white border border-slate-200 rounded-xl">
+                <span class="text-slate-400 block font-medium">Variances Detected</span>
+                <span class="text-xl font-bold font-mono text-amber-600 mt-1 block" id="drawer-variances">2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step By Step Pipeline Validation Audit -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Step-by-Step Validation Audit</h3>
+            <div class="space-y-2.5 text-xs">
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
+                <span class="flex items-center gap-2 font-medium text-emerald-800">
+                  <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                  Device Handshake & TLS Auth
+                </span>
+                <span class="font-mono text-[11px] text-slate-500">02:22:15 PM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
+                <span class="flex items-center gap-2 font-medium text-emerald-800">
+                  <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                  250 Barcode Payloads Ingested
+                </span>
+                <span class="font-mono text-[11px] text-slate-500">02:22:50 PM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
+                <span class="flex items-center gap-2 font-medium text-emerald-800">
+                  <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                  Checksum & Master SKU Validation
+                </span>
+                <span class="font-mono text-[11px] text-slate-500">02:23:42 PM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
+                <span class="flex items-center gap-2 font-medium text-emerald-800">
+                  <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                  Inventory Database Commit & Table Update
+                </span>
+                <span class="font-mono text-[11px] text-slate-500">02:24:18 PM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
+                <span class="flex items-center gap-2 font-medium text-emerald-800">
+                  <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
+                  Stocktake Session Metrics Recalculated
+                </span>
+                <span class="font-mono text-[11px] text-slate-500">02:25:32 PM</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-xs text-slate-500 font-mono">Job: JOB-2026-001</span>
+          <button type="button" onclick="closeSyncDetails()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+            Close Drawer
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       VARIANCE DETAILS MODAL
+  ══════════════════════════════════════════════════════════ -->
+  <div id="variance-modal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="variance-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity" onclick="closeVarianceModal()"></div>
+
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+      <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-slate-200">
+        
+        <!-- Modal Header -->
+        <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                42 Discrepancies
+              </span>
+              <span class="text-xs text-slate-400">July 2026 Stocktake</span>
+            </div>
+            <h2 id="variance-modal-title" class="text-lg font-bold text-white mt-1">
+              Stock Variance Reconciliation Ledger
+            </h2>
+          </div>
+          <button type="button" onclick="closeVarianceModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div class="p-6 overflow-x-auto max-h-[480px] custom-scrollbar">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold text-[11px]">
+                <th class="px-3 py-2.5">SKU Code</th>
+                <th class="px-3 py-2.5">Product Name</th>
+                <th class="px-3 py-2.5 text-right">Book Qty</th>
+                <th class="px-3 py-2.5 text-right">Scanned Qty</th>
+                <th class="px-3 py-2.5 text-right">Variance</th>
+                <th class="px-3 py-2.5 text-center">Status</th>
+                <th class="px-3 py-2.5 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+              <tr class="hover:bg-slate-50">
+                <td class="px-3 py-3 font-mono font-bold text-slate-900">SKU-ELEC-901</td>
+                <td class="px-3 py-3 font-semibold text-slate-900">Samsung 27" LED Monitor IPS</td>
+                <td class="px-3 py-3 text-right font-mono">150</td>
+                <td class="px-3 py-3 text-right font-mono text-slate-900 font-bold">138</td>
+                <td class="px-3 py-3 text-right font-mono font-bold text-rose-600">-12 (Shortage)</td>
+                <td class="px-3 py-3 text-center">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">Pending Review</span>
+                </td>
+                <td class="px-3 py-3 text-right">
+                  <button type="button" onclick="showNotification('Recount scheduled for SKU-ELEC-901', 'info')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 font-semibold text-[11px]">Recount</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="px-3 py-3 font-mono font-bold text-slate-900">SKU-CABL-104</td>
+                <td class="px-3 py-3 font-semibold text-slate-900">Cat6 Ethernet Patch Cable 5m</td>
+                <td class="px-3 py-3 text-right font-mono">500</td>
+                <td class="px-3 py-3 text-right font-mono text-slate-900 font-bold">508</td>
+                <td class="px-3 py-3 text-right font-mono font-bold text-blue-600">+8 (Excess)</td>
+                <td class="px-3 py-3 text-center">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">Approved</span>
+                </td>
+                <td class="px-3 py-3 text-right">
+                  <button type="button" class="px-2 py-1 bg-emerald-50 text-emerald-700 rounded font-semibold text-[11px]" disabled>Approved</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="px-3 py-3 font-mono font-bold text-slate-900">SKU-STOR-512</td>
+                <td class="px-3 py-3 font-semibold text-slate-900">SanDisk Extreme 1TB NVMe SSD</td>
+                <td class="px-3 py-3 text-right font-mono">200</td>
+                <td class="px-3 py-3 text-right font-mono text-slate-900 font-bold">196</td>
+                <td class="px-3 py-3 text-right font-mono font-bold text-rose-600">-4 (Shortage)</td>
+                <td class="px-3 py-3 text-center">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">Pending Review</span>
+                </td>
+                <td class="px-3 py-3 text-right">
+                  <button type="button" onclick="showNotification('Recount scheduled for SKU-STOR-512', 'info')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 font-semibold text-[11px]">Recount</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="px-3 py-3 font-mono font-bold text-slate-900">SKU-UNKN-009</td>
+                <td class="px-3 py-3 font-semibold text-slate-900">Unregistered Barcode [8901030456123]</td>
+                <td class="px-3 py-3 text-right font-mono text-slate-400">0</td>
+                <td class="px-3 py-3 text-right font-mono text-slate-900 font-bold">9</td>
+                <td class="px-3 py-3 text-right font-mono font-bold text-amber-600">+9 (Unmatched)</td>
+                <td class="px-3 py-3 text-center">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">Needs Mapping</span>
+                </td>
+                <td class="px-3 py-3 text-right">
+                  <button type="button" onclick="showNotification('Catalog mapping opened', 'info')" class="px-2 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded font-semibold text-[11px]">Map SKU</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+          <span class="text-xs text-slate-500">Showing top sample of 42 variances</span>
+          <button type="button" onclick="closeVarianceModal()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+            Close
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       TOAST NOTIFICATION COMPONENT
+  ══════════════════════════════════════════════════════════ -->
+  <div id="toast-notification" class="fixed bottom-5 right-5 z-50 hidden transition-all transform duration-300">
+    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900 text-white shadow-xl text-xs font-medium border border-slate-700">
+      <span id="toast-icon" class="text-emerald-400">✓</span>
+      <span id="toast-message">Action processed successfully</span>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       APPLICATION LOGIC SCRIPT
+  ══════════════════════════════════════════════════════════ -->
   <script src="assets/js/app.js"></script>
+  <script>
+    // Live system clock updater
+    setInterval(() => {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      const el = document.getElementById('live-clock');
+      if (el) el.textContent = `${dateStr}, ${timeStr}`;
+    }, 1000);
+
+    // Refresh dashboard simulation
+    function handleRefreshDashboard() {
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('rotate-180');
+      
+      showNotification('Fetching live synchronization updates from scanner gateway...', 'info');
+
+      setTimeout(() => {
+        if (icon) icon.classList.remove('rotate-180');
+        const now = new Date();
+        const timeFormatted = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        
+        const lastUpdated = document.getElementById('process-last-updated');
+        if (lastUpdated) lastUpdated.textContent = timeFormatted;
+
+        const headerAct = document.getElementById('header-last-activity');
+        if (headerAct) headerAct.textContent = `18 Sep 2026, ${timeFormatted}`;
+
+        showNotification('Process log & device sync statuses updated.', 'success');
+      }, 700);
+    }
+
+    // Toggle Timeline vs Table View
+    function switchProcessView(view) {
+      const timelineWrapper = document.getElementById('process-timeline-container');
+      const tableWrapper = document.getElementById('process-table-container');
+      const btnTimeline = document.getElementById('toggle-view-timeline');
+      const btnTable = document.getElementById('toggle-view-table');
+
+      if (view === 'timeline') {
+        timelineWrapper.classList.remove('hidden');
+        tableWrapper.classList.add('hidden');
+        btnTimeline.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-xs transition-colors';
+        btnTable.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-colors';
+      } else {
+        timelineWrapper.classList.add('hidden');
+        tableWrapper.classList.remove('hidden');
+        btnTable.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-xs transition-colors';
+        btnTimeline.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-colors';
+      }
+    }
+
+    // Process Log Filtering (Live Search + Select filters)
+    function applyProcessFilters() {
+      const searchQuery = (document.getElementById('filter-search')?.value || '').toLowerCase().trim();
+      const filterDevice = document.getElementById('filter-device')?.value || 'all';
+      const filterUser = document.getElementById('filter-user')?.value || 'all';
+      const filterLocation = document.getElementById('filter-location')?.value || 'all';
+      const filterEventType = document.getElementById('filter-event-type')?.value || 'all';
+      const filterStatus = document.getElementById('filter-status')?.value || 'all';
+
+      // Filter Timeline Items
+      const timelineEvents = document.querySelectorAll('.timeline-event');
+      timelineEvents.forEach(el => {
+        const textContent = el.textContent.toLowerCase();
+        const eventType = el.getAttribute('data-event-type') || '';
+        const status = el.getAttribute('data-status') || '';
+        const device = el.getAttribute('data-device') || '';
+        const user = el.getAttribute('data-user') || '';
+        const location = el.getAttribute('data-location') || '';
+
+        const matchesSearch = !searchQuery || textContent.includes(searchQuery);
+        const matchesDevice = (filterDevice === 'all') || (device === filterDevice);
+        const matchesUser = (filterUser === 'all') || (user.toLowerCase().includes(filterUser.toLowerCase()));
+        const matchesLocation = (filterLocation === 'all') || (location.toLowerCase().includes(filterLocation.toLowerCase()));
+        const matchesEventType = (filterEventType === 'all') || (eventType.toLowerCase().includes(filterEventType.toLowerCase()));
+        const matchesStatus = (filterStatus === 'all') || (status.toLowerCase().includes(filterStatus.toLowerCase()));
+
+        if (matchesSearch && matchesDevice && matchesUser && matchesLocation && matchesEventType && matchesStatus) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      // Filter Table Rows
+      const tableRows = document.querySelectorAll('#process-table-body tr');
+      tableRows.forEach(row => {
+        const rowText = row.textContent.toLowerCase();
+        const matchesSearch = !searchQuery || rowText.includes(searchQuery);
+        const matchesDevice = (filterDevice === 'all') || rowText.includes(filterDevice.toLowerCase());
+        const matchesUser = (filterUser === 'all') || rowText.includes(filterUser.toLowerCase());
+        const matchesLocation = (filterLocation === 'all') || rowText.includes(filterLocation.toLowerCase());
+        const matchesEventType = (filterEventType === 'all') || rowText.includes(filterEventType.toLowerCase());
+        const matchesStatus = (filterStatus === 'all') || rowText.includes(filterStatus.toLowerCase());
+
+        if (matchesSearch && matchesDevice && matchesUser && matchesLocation && matchesEventType && matchesStatus) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    function clearProcessFilters() {
+      if (document.getElementById('filter-search')) document.getElementById('filter-search').value = '';
+      if (document.getElementById('filter-device')) document.getElementById('filter-device').value = 'all';
+      if (document.getElementById('filter-user')) document.getElementById('filter-user').value = 'all';
+      if (document.getElementById('filter-location')) document.getElementById('filter-location').value = 'all';
+      if (document.getElementById('filter-event-type')) document.getElementById('filter-event-type').value = 'all';
+      if (document.getElementById('filter-status')) document.getElementById('filter-status').value = 'all';
+      applyProcessFilters();
+      showNotification('Filters cleared', 'info');
+    }
+
+    // Drawer Mock Data & Open/Close Handlers
+    const deviceSyncDetailsMap = {
+      'DEVICE-001': {
+        deviceId: 'DEVICE-001',
+        syncId: 'SYNC-20260918-00251',
+        user: 'John Smith',
+        location: 'Warehouse A / Location 001',
+        started: '02:22:15 PM',
+        completed: '02:23:57 PM',
+        duration: '1m 42s',
+        statusText: '✓ Successfully Reconciled',
+        received: 250,
+        processed: 250,
+        updated: 248,
+        skipped: 0,
+        duplicates: 0,
+        variances: 2
+      },
+      'DEVICE-002': {
+        deviceId: 'DEVICE-002',
+        syncId: 'SYNC-20260918-00249',
+        user: 'Mike Wilson',
+        location: 'Warehouse A / Location 002',
+        started: '02:18:10 PM',
+        completed: 'In Progress...',
+        duration: '2m 14s (streaming)',
+        statusText: '● Active Live Stream',
+        received: 180,
+        processed: 145,
+        updated: 143,
+        skipped: 0,
+        duplicates: 0,
+        variances: 2
+      },
+      'DEVICE-003': {
+        deviceId: 'DEVICE-003',
+        syncId: 'SYNC-20260918-00210',
+        user: 'Sarah Lee',
+        location: 'Warehouse A / Location 003',
+        started: '01:42:00 PM',
+        completed: '01:44:30 PM',
+        duration: '2m 30s',
+        statusText: '✓ Completed & Disconnected',
+        received: 120,
+        processed: 120,
+        updated: 120,
+        skipped: 0,
+        duplicates: 0,
+        variances: 0
+      },
+      'DEVICE-004': {
+        deviceId: 'DEVICE-004',
+        syncId: 'SYNC-20260918-00235',
+        user: 'David Patel',
+        location: 'Warehouse B / Location 006',
+        started: '02:15:00 PM',
+        completed: '02:16:12 PM (Aborted)',
+        duration: '1m 12s',
+        statusText: '❌ Connection Interrupted',
+        received: 120,
+        processed: 85,
+        updated: 81,
+        skipped: 4,
+        duplicates: 0,
+        variances: 4
+      }
+    };
+
+    function openSyncDetails(deviceId) {
+      const data = deviceSyncDetailsMap[deviceId] || deviceSyncDetailsMap['DEVICE-001'];
+      document.getElementById('drawer-device-badge').textContent = data.deviceId;
+      document.getElementById('drawer-sync-id').textContent = data.syncId;
+      document.getElementById('drawer-user').textContent = data.user;
+      document.getElementById('drawer-location').textContent = data.location;
+      document.getElementById('drawer-started').textContent = data.started;
+      document.getElementById('drawer-completed').textContent = data.completed;
+      document.getElementById('drawer-duration').textContent = data.duration;
+      document.getElementById('drawer-status').textContent = data.statusText;
+      document.getElementById('drawer-records-received').textContent = data.received;
+      document.getElementById('drawer-records-processed').textContent = data.processed;
+      document.getElementById('drawer-records-updated').textContent = data.updated;
+      document.getElementById('drawer-records-skipped').textContent = data.skipped;
+      document.getElementById('drawer-duplicates').textContent = data.duplicates;
+      document.getElementById('drawer-variances').textContent = data.variances;
+
+      const drawer = document.getElementById('sync-drawer');
+      if (drawer) drawer.classList.remove('hidden');
+    }
+
+    function closeSyncDetails() {
+      const drawer = document.getElementById('sync-drawer');
+      if (drawer) drawer.classList.add('hidden');
+    }
+
+    // Variance Modal Handlers
+    function openVarianceModal() {
+      const modal = document.getElementById('variance-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeVarianceModal() {
+      const modal = document.getElementById('variance-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Retry Sync action with UI feedback
+    function retryDeviceSync(deviceId) {
+      showNotification(`Re-establishing TLS tunnel to ${deviceId}...`, 'info');
+      const btn = document.getElementById(`btn-retry-${deviceId}`);
+      if (btn) {
+        btn.innerHTML = `
+          <svg class="animate-spin w-3 h-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+          Retrying...
+        `;
+      }
+
+      setTimeout(() => {
+        showNotification(`${deviceId} reconnected. Uploading remaining 35 packet records.`, 'success');
+        if (btn) {
+          btn.innerHTML = `✓ Retrying`;
+          btn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-600 text-white';
+        }
+      }, 1500);
+    }
+
+    // Notification toast
+    function showNotification(msg, type = 'success') {
+      const toast = document.getElementById('toast-notification');
+      const text = document.getElementById('toast-message');
+      const icon = document.getElementById('toast-icon');
+      if (!toast || !text) return;
+
+      text.textContent = msg;
+      if (type === 'success') {
+        icon.textContent = '✓';
+        icon.className = 'text-emerald-400 font-bold';
+      } else if (type === 'info') {
+        icon.textContent = 'ℹ';
+        icon.className = 'text-blue-400 font-bold';
+      } else if (type === 'error') {
+        icon.textContent = '✕';
+        icon.className = 'text-rose-400 font-bold';
+      }
+
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    // Dropdown toggles
+    function toggleExportMenu() {
+      const menu = document.getElementById('export-dropdown');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function toggleMoreMenu() {
+      const menu = document.getElementById('more-dropdown');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    window.addEventListener('click', (e) => {
+      const expContainer = document.getElementById('export-container');
+      const moreContainer = document.getElementById('more-container');
+      if (expContainer && !expContainer.contains(e.target)) {
+        document.getElementById('export-dropdown')?.classList.add('hidden');
+      }
+      if (moreContainer && !moreContainer.contains(e.target)) {
+        document.getElementById('more-dropdown')?.classList.add('hidden');
+      }
+    });
+
+    // Export stock data
+    function exportStockData(format) {
+      if (format === 'csv') {
+        const rows = [
+          ['Job ID', 'Client Name', 'Job Name', 'Total Items', 'Scanned', 'Pending', 'Variance', 'Completion Rate'],
+          ['JOB-2026-001', 'ABC Retail Ltd.', 'July 2026 Stocktake', '4855', '4120', '735', '42', '84.8%']
+        ];
+        const csvContent = rows.map(e => e.join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'ABC_Retail_Stocktake_JOB-2026-001.csv';
+        link.click();
+        showNotification('CSV exported successfully', 'success');
+      } else if (format === 'xlsx') {
+        const rows = [
+          ['Job ID', 'Client Name', 'Job Name', 'Total Items', 'Scanned', 'Pending', 'Variance', 'Completion Rate'],
+          ['JOB-2026-001', 'ABC Retail Ltd.', 'July 2026 Stocktake', '4855', '4120', '735', '42', '84.8%']
+        ];
+        const content = rows.map(e => e.join('\t')).join('\n');
+        const blob = new Blob([content], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'ABC_Retail_Stocktake_JOB-2026-001.xls';
+        link.click();
+        showNotification('Excel report generated', 'success');
+      }
+    }
+  </script>
 </body>
 </html>

@@ -127,25 +127,9 @@
           </a>
         </li>
 
-        <!-- Products -->
-        <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            Products
-          </a>
-        </li>
-
         <!-- Reports -->
         <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+          <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                    text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
                    hover:text-[var(--color-text-primary)] transition-colors duration-150">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -290,7 +274,7 @@
         <!-- ════════════════════════════════════════
              TOP SECTION: WORKER FORM (Single Card)
         ════════════════════════════════════════ -->
-        <form id="worker-form" action="#" method="POST" novalidate class="w-full mx-auto mb-8">
+        <form id="worker-form" action="javascript:void(0);" onsubmit="event.preventDefault();" novalidate class="w-full mx-auto mb-8">
           <div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm">
             
             <div class="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50 flex items-center justify-between">
@@ -523,8 +507,9 @@
 
   <!-- JavaScript Interactivity -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    function initWorkerManager() {
       const form = document.getElementById('worker-form');
+      if (!form) return;
       const nameInput = document.getElementById('worker-name');
       const contactInput = document.getElementById('worker-contact');
       const emailInput = document.getElementById('worker-email');
@@ -687,7 +672,13 @@
           setTimeout(() => toast.classList.add('hidden'), 4000);
         }
       };
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWorkerManager);
+    } else {
+      initWorkerManager();
+    }
   </script>
 </body>
 </html>

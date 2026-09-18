@@ -126,25 +126,9 @@
         
        
 
-        <!-- Products -->
-        <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            Products
-          </a>
-        </li>
-
         <!-- Reports -->
         <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+          <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                    text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
                    hover:text-[var(--color-text-primary)] transition-colors duration-150">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -289,7 +273,7 @@
         <!-- ════════════════════════════════════════
              TOP SECTION: CLIENT FORM (Single Card)
         ════════════════════════════════════════ -->
-        <form id="client-form" action="#" method="POST" novalidate class="w-full mx-auto mb-8">
+        <form id="client-form" action="javascript:void(0);" onsubmit="event.preventDefault();" novalidate class="w-full mx-auto mb-8">
           <div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm">
             
             <div class="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50 flex items-center justify-between">
@@ -395,7 +379,6 @@
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Client Name</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Contact Number</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Email Address</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider w-28">Status</th>
                   <th class="px-4 py-3 text-right text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider w-36">Actions</th>
                 </tr>
               </thead>
@@ -411,9 +394,6 @@
                   </td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">+44 20 7946 0192</td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)]">info@harringtonslogistics.co.uk</td>
-                  <td class="px-4 py-3.5">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
-                  </td>
                   <td class="px-4 py-3.5 text-right">
                     <div class="inline-flex items-center gap-1">
                       <button type="button" onclick="editClient(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
@@ -433,9 +413,6 @@
                   </td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">+44 161 496 0284</td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)]">operations@apexfulfilment.co.uk</td>
-                  <td class="px-4 py-3.5">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
-                  </td>
                   <td class="px-4 py-3.5 text-right">
                     <div class="inline-flex items-center gap-1">
                       <button type="button" onclick="editClient(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
@@ -455,9 +432,6 @@
                   </td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">+44 141 496 0371</td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)]">enquiries@caledoniafreight.co.uk</td>
-                  <td class="px-4 py-3.5">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
-                  </td>
                   <td class="px-4 py-3.5 text-right">
                     <div class="inline-flex items-center gap-1">
                       <button type="button" onclick="editClient(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
@@ -477,9 +451,6 @@
                   </td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">+44 117 496 0453</td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)]">contact@bristolportstorage.co.uk</td>
-                  <td class="px-4 py-3.5">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
-                  </td>
                   <td class="px-4 py-3.5 text-right">
                     <div class="inline-flex items-center gap-1">
                       <button type="button" onclick="editClient(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
@@ -499,9 +470,6 @@
                   </td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">+44 121 496 0528</td>
                   <td class="px-4 py-3.5 text-[var(--color-text-secondary)]">support@midlandsexpress.co.uk</td>
-                  <td class="px-4 py-3.5">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
-                  </td>
                   <td class="px-4 py-3.5 text-right">
                     <div class="inline-flex items-center gap-1">
                       <button type="button" onclick="editClient(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
@@ -522,8 +490,9 @@
 
   <!-- JavaScript Interactivity -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    function initClientManager() {
       const form = document.getElementById('client-form');
+      if (!form) return;
       const nameInput = document.getElementById('client-name');
       const contactInput = document.getElementById('client-contact');
       const emailInput = document.getElementById('client-email');
@@ -539,6 +508,7 @@
       let currentEditingRow = null;
 
       function updateCount() {
+        if (!tbody || !countBadge) return;
         const rows = tbody.querySelectorAll('.client-row');
         countBadge.textContent = rows.length + ' Clients';
       }
@@ -607,9 +577,6 @@
             </td>
             <td class="${contactVal ? 'px-4 py-3.5 text-[var(--color-text-secondary)] font-medium' : 'px-4 py-3.5 text-[var(--color-text-muted)] font-normal italic'}">${displayContact}</td>
             <td class="${emailVal ? 'px-4 py-3.5 text-[var(--color-text-secondary)]' : 'px-4 py-3.5 text-[var(--color-text-muted)] font-normal italic'}">${displayEmail}</td>
-            <td class="px-4 py-3.5">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
-            </td>
             <td class="px-4 py-3.5 text-right">
               <div class="inline-flex items-center gap-1">
                 <button type="button" onclick="editClient(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
@@ -686,7 +653,13 @@
           setTimeout(() => toast.classList.add('hidden'), 4000);
         }
       };
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initClientManager);
+    } else {
+      initClientManager();
+    }
   </script>
 </body>
 </html>
