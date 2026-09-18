@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Job Details, Live Device Sync & Discrepancy Reports — Admin Panel" />
+  <title>Job Details & Reports — Admin Panel</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body class="h-screen flex overflow-hidden font-sans antialiased bg-[var(--color-background)]">
+
+  <!-- ══════ SIDEBAR ══════ -->
+  <aside id="sidebar" aria-label="Main navigation"
+    class="hidden lg:flex flex-col w-64 shrink-0 h-full
+           bg-[var(--color-sidebar-bg)] border-r border-[var(--color-sidebar-border)]">
+
+    <div class="flex items-center justify-center h-16 px-6 shrink-0 border-b border-[var(--color-border)]">
+      <span class="text-xs font-semibold tracking-widest uppercase text-[var(--color-text-muted)]
+                   border border-dashed border-[var(--color-border)] rounded px-4 py-2 select-none">LOGO</span>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto py-4 px-3" aria-label="Sidebar navigation">
+      <ul role="list" class="space-y-0.5">
+
+        <!-- Dashboard -->
+        <li>
+          <a href="dashboard.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            Dashboard
+          </a>
+        </li>
+
+        <!-- Clients -->
+        <li>
+          <a href="clients-list.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Clients
+          </a>
+        </li>
+
+        <!-- Workers -->
+        <li>
+          <a href="workers-list.html"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Workers
+          </a>
+        </li>
+
+        <!-- Jobs ACTIVE -->
+        <li>
+          <a href="jobs-list.html" aria-current="page"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold
+                   bg-[var(--color-nav-active-bg)] text-[var(--color-nav-active-text)]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            </svg>
+            Jobs
+          </a>
+        </li>
+
+        <!-- Products -->
+        <li>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            Products
+          </a>
+        </li>
+
+        <!-- Reports -->
+        <li>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Reports
+          </a>
+        </li>
+
+        <!-- Settings -->
+        <li>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
+                       a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
+                       A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
+                       l.06-.06A1.65 1.65 0 0 0 4.68 15 1.65 1.65 0 0 0 3.17 14H3a2 2 0 0 1 0-4h.09
+                       A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
+                       l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 0 1 4 0v.09
+                       a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
+                       l-.06.06A1.65 1.65 0 0 0 19.4 9 1.65 1.65 0 0 0 20.83 10H21a2 2 0 0 1 0 4h-.09
+                       a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Settings
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="shrink-0 border-t border-[var(--color-border)] px-4 py-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="flex items-center justify-center w-9 h-9 rounded-full shrink-0
+                     bg-[var(--color-primary-light)] text-[var(--color-primary)]" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-[var(--color-text-primary)] truncate">Admin User</p>
+          <p class="text-xs text-[var(--color-text-muted)] truncate">Administrator</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- End Sidebar -->
+
+
+  <!-- ══════ RIGHT PANEL ══════ -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <header id="main-header" role="banner"
+      class="flex items-center shrink-0 h-16 px-4 sm:px-6
+             bg-[var(--color-surface)] border-b border-[var(--color-border)]">
+      <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu"
+        class="lg:hidden flex items-center justify-center w-10 h-10 mr-3 -ml-1 rounded-lg
+               text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+               transition-colors duration-150">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div class="flex-1 min-w-0"></div>
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button id="notification-btn" type="button" aria-label="View notifications"
+          class="flex items-center justify-center w-10 h-10 rounded-lg
+                 text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                 transition-colors duration-150">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </button>
+        <button id="user-menu-btn" type="button" aria-label="Open user menu"
+          class="flex items-center gap-2 px-3 h-10 rounded-lg text-sm font-medium
+                 text-[var(--color-text-primary)] hover:bg-[var(--color-nav-hover-bg)]
+                 transition-colors duration-150">
+          <span class="flex items-center justify-center w-7 h-7 rounded-full shrink-0
+                       bg-[var(--color-primary-light)] text-[var(--color-primary)]" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </span>
+          <span class="hidden sm:block truncate max-w-[120px]">Admin User</span>
+          <svg class="hidden sm:block shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main (scrollable) -->
+    <main id="main-content" class="flex-1 overflow-y-auto flex flex-col min-w-0" aria-label="Main content">
+      <section class="flex-1 p-4 sm:p-6 lg:p-8 space-y-6" aria-labelledby="page-heading">
+
+        <!-- Breadcrumb + Job Heading + Reporting Bar -->
+        <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+          <div>
+            <nav aria-label="Breadcrumb" class="mb-2">
+              <ol class="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+                <li><a href="jobs-list.html" class="hover:text-[var(--color-primary)] transition-colors">Jobs</a></li>
+                <li aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                       stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </li>
+                <li class="text-[var(--color-text-primary)] font-medium" aria-current="page">JOB-2026-001</li>
+              </ol>
+            </nav>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <h1 id="page-heading" class="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)] leading-tight">
+                Annual Q3 Warehouse Audit
+              </h1>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                In Progress
+              </span>
+            </div>
+            <p class="mt-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">
+              Client: <span class="font-semibold text-slate-800">Raj Warehouses Pvt. Ltd.</span> &bull; Location: <span class="text-slate-700">Plot 42, GIDC Estate, Sector 15, Gandhinagar</span>
+            </p>
+          </div>
+
+          <!-- ── REPORTING OPTION / EXPORT ACTIONS ────── -->
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button type="button" onclick="alert('Generating Full Stocktaking Audit Report... Report PDF downloaded!')"
+              class="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-xs font-semibold shadow-xs transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Generate Full Audit Report
+            </button>
+            <button type="button" onclick="alert('Exporting Discrepancy Excel Sheet... file downloaded!')"
+              class="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs transition-colors">
+              <svg class="text-emerald-600" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+              Export Discrepancy Sheet (.XLSX)
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             STATUS BAR & REAL-TIME HARDWARE SYNC STATUS
+        ════════════════════════════════════════════ -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
+
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div class="flex items-center gap-3">
+              <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+              </span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-sm font-bold text-slate-900">Live Device Hardware Sync Status</h2>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    SYNCING BATCH #084
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Handheld scanner device <strong class="text-slate-800">DEV-ST-9842X</strong> (Worker: <strong class="text-slate-800">Rahul Sharma</strong>) is transmitting physical barcode scans to server.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-600 self-end md:self-auto">
+              <span>Last Sync: <strong class="text-slate-900 font-mono">16:42:15 (Just now)</strong></span>
+              <button type="button" onclick="alert('Manual sync trigger sent to active worker devices!')" class="p-1.5 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-colors" title="Refresh Sync">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Overall Sync Progress Bar -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-slate-700">Physical Scan vs Expected Book Stock Progress</span>
+              <span class="font-mono font-bold text-emerald-700 text-sm">78% Synced (850 / 1,080 Items)</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+              <div class="bg-gradient-to-r from-blue-600 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: 78%"></div>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
+              <span>Imported Stock Book File: <strong>stock_master_q3.csv</strong></span>
+              <span>230 Items Pending Scan</span>
+            </div>
+          </div>
+
+          <!-- Active Devices List -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <div>
+                  <span class="font-bold text-slate-800 font-mono">DEV-ST-9842X</span>
+                  <span class="text-slate-500 block text-[11px]">Rahul Sharma &bull; Zebra TC21</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-mono font-bold text-slate-800">850 Items</span>
+                <span class="text-[10px] text-emerald-700 font-semibold block">Active Syncing</span>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <div>
+                  <span class="font-bold text-slate-800 font-mono">DEV-ST-4120Y</span>
+                  <span class="text-slate-500 block text-[11px]">Amit Verma &bull; Honeywell EDA51</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-mono font-bold text-slate-800">0 Items</span>
+                <span class="text-[10px] text-slate-500 font-medium block">Idle / Standby</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             STOCK AUDIT DISCREPANCY & REPORTING SECTION
+        ════════════════════════════════════════════ -->
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs space-y-0">
+
+          <!-- Section Header & Filter Tabs -->
+          <div class="p-4 sm:px-5 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Stocktaking Audit & Discrepancy Report</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Comparison between imported book stock quantities and physical scanned counts.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold text-slate-600">
+              <button type="button" class="px-3 py-1.5 rounded-md bg-white text-blue-700 shadow-xs">All Items (5)</button>
+              <button type="button" class="px-3 py-1.5 rounded-md hover:bg-white/60 text-slate-600">Shortage (2)</button>
+              <button type="button" class="px-3 py-1.5 rounded-md hover:bg-white/60 text-slate-600">Excess (1)</button>
+              <button type="button" class="px-3 py-1.5 rounded-md hover:bg-white/60 text-slate-600">Matched (2)</button>
+            </div>
+          </div>
+
+          <!-- Report Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead>
+                <tr class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                  <th class="py-3 px-4">SKU Code</th>
+                  <th class="py-3 px-4">Product Name</th>
+                  <th class="py-3 px-4 text-center">Book Qty (Expected)</th>
+                  <th class="py-3 px-4 text-center">Physical Scanned Qty</th>
+                  <th class="py-3 px-4 text-center">Variance Qty (+/-)</th>
+                  <th class="py-3 px-4 text-right">Variance Value (₹)</th>
+                  <th class="py-3 px-4 text-center">Audit Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+
+                <!-- Row 1: Shortage -->
+                <tr class="hover:bg-red-50/30 transition-colors">
+                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-ELEC-901</td>
+                  <td class="py-3 px-4">
+                    <span class="font-medium text-slate-900 block">Samsung 27" LED Monitor IPS</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567891</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">150</td>
+                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">138</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-red-100 text-red-700 text-xs">
+                      -12 Units
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-red-600">-1,74,000.00</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700 border border-red-200">
+                      Shortage
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Row 2: Matched -->
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-ELEC-902</td>
+                  <td class="py-3 px-4">
+                    <span class="font-medium text-slate-900 block">Logitech MX Master 3S Wireless Mouse</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567892</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">300</td>
+                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">300</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-blue-50 text-blue-700 text-xs">
+                      0 (Matched)
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right font-mono text-slate-600">0.00</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Matched
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Row 3: Excess -->
+                <tr class="hover:bg-emerald-50/30 transition-colors">
+                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-CABL-104</td>
+                  <td class="py-3 px-4">
+                    <span class="font-medium text-slate-900 block">Cat6 Ethernet Patch Cable 5m</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567893</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">500</td>
+                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">508</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-emerald-100 text-emerald-800 text-xs">
+                      +8 Units
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600">+2,800.00</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                      Excess
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Row 4: Shortage -->
+                <tr class="hover:bg-red-50/30 transition-colors">
+                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-STOR-512</td>
+                  <td class="py-3 px-4">
+                    <span class="font-medium text-slate-900 block">SanDisk Extreme 1TB NVMe SSD</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567894</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">200</td>
+                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">196</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-red-100 text-red-700 text-xs">
+                      -4 Units
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right font-mono font-bold text-red-600">-36,800.00</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-50 text-red-700 border border-red-200">
+                      Shortage
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Row 5: Matched -->
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="py-3 px-4 font-mono font-semibold text-slate-800">SKU-POWR-201</td>
+                  <td class="py-3 px-4">
+                    <span class="font-medium text-slate-900 block">APC Smart-UPS 1000VA Battery Backup</span>
+                    <span class="text-[10px] text-slate-500 font-mono">Barcode: 8901234567895</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono font-medium text-slate-700">100</td>
+                  <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">100</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded font-mono font-bold bg-blue-50 text-blue-700 text-xs">
+                      0 (Matched)
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right font-mono text-slate-600">0.00</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Matched
+                    </span>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer Summary -->
+          <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
+            <span>Discrepancy Summary: <strong>2 Shortages (-16 units)</strong>, <strong>1 Excess (+8 units)</strong></span>
+            <span class="font-semibold text-red-600">Net Stock Value Variance: -₹2,08,000.00</span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Footer -->
+      <footer id="main-footer" role="contentinfo"
+        class="shrink-0 border-t border-[var(--color-border)] bg-[var(--color-surface)]
+               px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between
+                    gap-1 sm:gap-0 text-xs text-[var(--color-text-muted)]">
+          <span>© 2026 Admin Panel. All rights reserved.</span>
+          <span>Version 1.0.0</span>
+        </div>
+      </footer>
+    </main>
+
+  </div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
