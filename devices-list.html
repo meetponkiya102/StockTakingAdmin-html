@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Barcode Scanner Device Management — Admin Panel" />
+  <title>Handheld Devices — Admin Panel</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <style>
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      font-size: .875rem;
+      color: var(--color-text-primary);
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      transition: border-color .15s, box-shadow .15s;
+      outline: none;
+    }
+
+    .form-input::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+  </style>
+</head>
+
+<body class="h-screen flex overflow-hidden font-sans antialiased bg-[var(--color-background)]">
+
+  <!-- ══════ SIDEBAR ══════ -->
+  <aside id="sidebar" aria-label="Main navigation" class="hidden lg:flex flex-col w-64 shrink-0 h-full
+           bg-[var(--color-sidebar-bg)] border-r border-[var(--color-sidebar-border)]">
+
+    <!-- Logo -->
+    <div class="flex items-center justify-center h-16 px-6 shrink-0 border-b border-[var(--color-border)]">
+      <span class="text-xs font-semibold tracking-widest uppercase text-[var(--color-text-muted)]
+                   border border-dashed border-[var(--color-border)] rounded px-4 py-2 select-none">LOGO</span>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 overflow-y-auto py-4 px-3" aria-label="Sidebar navigation">
+      <ul role="list" class="space-y-0.5">
+
+        <!-- Dashboard -->
+        <li>
+          <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              class="shrink-0">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+
+        <!-- Clients -->
+        <li>
+          <a href="clients-list.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              class="shrink-0">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Clients
+          </a>
+        </li>
+
+        <!-- Devices (ACTIVE) -->
+        <li>
+          <a href="devices-list.html" aria-current="page" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold
+                   bg-[var(--color-nav-active-bg)] text-[var(--color-nav-active-text)]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              class="shrink-0">
+              <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3" />
+              <path d="M9 7h6M9 11h6" />
+            </svg>
+            Devices
+          </a>
+        </li>
+
+        <!-- Jobs -->
+        <li>
+          <a href="jobs-list.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              class="shrink-0">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+            </svg>
+            Jobs
+          </a>
+        </li>
+
+        <!-- Reports -->
+        <li>
+          <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+              class="shrink-0">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            Reports
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <!-- User profile -->
+    <div class="shrink-0 border-t border-[var(--color-border)] px-4 py-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="flex items-center justify-center w-9 h-9 rounded-full shrink-0
+                     bg-[var(--color-primary-light)] text-[var(--color-primary)]" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+        </span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-[var(--color-text-primary)] truncate">Admin User</p>
+          <p class="text-xs text-[var(--color-text-muted)] truncate">Administrator</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- End Sidebar -->
+
+  <!-- ══════ RIGHT PANEL ══════ -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <header id="main-header" role="banner" class="flex items-center shrink-0 h-16 px-4 sm:px-6
+             bg-[var(--color-surface)] border-b border-[var(--color-border)]">
+      <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden flex items-center justify-center w-10 h-10 mr-3 -ml-1 rounded-lg
+               text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+               transition-colors duration-150">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <div class="flex-1 min-w-0"></div>
+      <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button id="notification-btn" type="button" aria-label="View notifications" class="flex items-center justify-center w-10 h-10 rounded-lg
+                 text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
+                 transition-colors duration-150">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+        </button>
+        <button id="user-menu-btn" type="button" aria-label="Open user menu" class="flex items-center gap-2 px-3 h-10 rounded-lg text-sm font-medium
+                 text-[var(--color-text-primary)] hover:bg-[var(--color-nav-hover-bg)]
+                 transition-colors duration-150">
+          <span class="flex items-center justify-center w-7 h-7 rounded-full shrink-0
+                       bg-[var(--color-primary-light)] text-[var(--color-primary)]" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+          </span>
+          <span class="hidden sm:block truncate max-w-[120px]">Admin User</span>
+          <svg class="hidden sm:block shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main (scrollable) -->
+    <main id="main-content" class="flex-1 overflow-y-auto flex flex-col min-w-0" aria-label="Main content">
+      <section class="flex-1 p-4 sm:p-6 lg:p-8" aria-labelledby="page-heading">
+
+        <!-- Page Heading -->
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 id="page-heading"
+              class="text-xl sm:text-2xl font-semibold text-[var(--color-text-primary)] leading-tight flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-blue-600" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+                <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3" />
+                <path d="M9 7h6M9 11h6" />
+              </svg>
+              Devices
+            </h1>
+          </div>
+
+          <!-- Quick Stats Pills -->
+          <div class="flex items-center gap-2 shrink-0">
+            <span id="badge-total"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+              5 Total Devices
+            </span>
+            <span id="badge-connected"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              3 Connected
+            </span>
+            <span id="badge-disconnected"
+              class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+              2 Disconnected
+            </span>
+          </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toast-notification"
+          class="hidden mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium flex items-center justify-between shadow-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-600 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span id="toast-message">Device saved successfully!</span>
+          </div>
+          <button type="button" onclick="document.getElementById('toast-notification').classList.add('hidden')"
+            class="text-emerald-600 hover:text-emerald-800 text-xs font-bold">Dismiss</button>
+        </div>
+
+        <!-- ════════════════════════════════════════
+             TOP SECTION: DEVICE REGISTRATION FORM
+        ════════════════════════════════════════ -->
+        <form id="device-form" action="javascript:void(0);" onsubmit="event.preventDefault();" novalidate
+          class="w-full mx-auto mb-8">
+          <div
+            class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm">
+
+            <div
+              class="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50 flex items-center justify-between">
+              <div>
+                <h2 id="form-card-title" class="text-base font-semibold text-[var(--color-text-primary)]">Register Device</h2>
+              </div>
+            </div>
+
+            <div class="px-5 py-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              <!-- Device Name (Required) -->
+              <div>
+                <label for="device-name" class="form-label">
+                  Device Name / Label <span class="text-[var(--color-danger)]" aria-hidden="true">*</span>
+                </label>
+                <input type="text" id="device-name" name="device_name" placeholder="e.g. Honeywell EDA52 - Unit 01"
+                  required class="form-input" />
+              </div>
+
+              <!-- Model Number (Optional) -->
+              <div>
+                <label for="device-model" class="form-label">
+                  Model Number <span class="text-xs font-normal text-[var(--color-text-muted)]">(Optional)</span>
+                </label>
+                <input type="text" id="device-model" name="model" placeholder="e.g. ScanPal EDA52" class="form-input" />
+              </div>
+
+              <!-- Serial Number / Device ID (Required) -->
+              <div>
+                <label for="device-serial" class="form-label">
+                  Serial Number / Device ID <span class="text-[var(--color-danger)]" aria-hidden="true">*</span>
+                </label>
+                <input type="text" id="device-serial" name="serial" placeholder="e.g. HW-EDA52-9982" required
+                  class="form-input font-mono" />
+              </div>
+
+              <!-- Connection Status (Required) -->
+              <div>
+                <label for="device-status" class="form-label">
+                  Connection Status <span class="text-[var(--color-danger)]" aria-hidden="true">*</span>
+                </label>
+                <select id="device-status" name="status" class="form-select">
+                  <option value="Connected">Connected (Active)</option>
+                  <option value="Disconnected">Disconnected (Offline)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div
+              class="px-5 py-4 border-t border-[var(--color-border)] bg-[var(--color-background)] flex items-center justify-end gap-3">
+              <button type="button" id="reset-device-btn"
+                class="inline-flex items-center justify-center px-4 h-9 rounded-lg text-sm font-medium border border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] hover:bg-slate-100 transition-colors duration-150">
+                Clear
+              </button>
+              <button type="submit" id="save-device-btn"
+                class="inline-flex items-center justify-center gap-2 px-5 h-9 rounded-lg text-sm font-semibold bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white transition-colors duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <span id="save-btn-text">Save Device</span>
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+        <!-- ════════════════════════════════════════
+             BOTTOM SECTION: DEVICE DIRECTORY TABLE
+        ════════════════════════════════════════ -->
+        <div class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm">
+
+          <!-- Toolbar -->
+          <div
+            class="flex flex-col md:flex-row md:items-center justify-between gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50">
+            <div>
+              <h2 class="text-base font-semibold text-[var(--color-text-primary)]">Handheld Scanner Fleet Directory</h2>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <!-- Filter by Connection Status -->
+              <select id="filter-status"
+                class="h-9 px-3 text-xs font-medium border border-[var(--color-border)] rounded-lg bg-white text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ALL">All Connection Statuses</option>
+                <option value="Connected">Connected Only</option>
+                <option value="Disconnected">Disconnected Only</option>
+              </select>
+
+              <!-- Search -->
+              <div class="relative w-full sm:w-64">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+                  xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="device-search" placeholder="Search devices by name, model, serial..." class="w-full h-9 pl-9 pr-3 text-sm text-[var(--color-text-primary)]
+                         placeholder-[var(--color-text-muted)]
+                         border border-[var(--color-border)] rounded-lg bg-white
+                         focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
+                         focus:border-[var(--color-primary)] transition-colors duration-150" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[640px] text-sm" aria-label="Handheld scanner devices directory">
+              <thead>
+                <tr class="border-b border-[var(--color-border)] bg-[var(--color-background)] select-none">
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider w-12">#</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Device Name</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Model Number</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Serial Number / Device ID</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Connection Status</th>
+                  <th class="px-4 py-3 text-right text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider w-28">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="devices-tbody" class="divide-y divide-[var(--color-border)]">
+
+                <!-- Row 1: Honeywell EDA52 -->
+                <tr class="device-row hover:bg-slate-50 transition-colors" data-name="Honeywell ScanPal EDA52 - Unit 01"
+                  data-model="ScanPal EDA52" data-serial="HW-EDA52-99823" data-status="Connected">
+                  <td class="px-4 py-3.5 text-[var(--color-text-muted)] font-medium">1</td>
+                  <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">Honeywell ScanPal EDA52 - Unit 01</td>
+                  <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">ScanPal EDA52</td>
+                  <td class="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">HW-EDA52-99823</td>
+                  <td class="px-4 py-3.5">
+                    <span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                      Connected
+                    </span>
+                  </td>
+                  <td class="px-4 py-3.5 text-right">
+                    <div class="inline-flex items-center gap-1">
+                      <button type="button" onclick="editDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
+                      <button type="button" onclick="deleteDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 2: Honeywell CT60 -->
+                <tr class="device-row hover:bg-slate-50 transition-colors" data-name="Honeywell Dolphin CT60"
+                  data-model="Dolphin CT60" data-serial="HW-CT60-88120" data-status="Connected">
+                  <td class="px-4 py-3.5 text-[var(--color-text-muted)] font-medium">2</td>
+                  <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">Honeywell Dolphin CT60</td>
+                  <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">Dolphin CT60</td>
+                  <td class="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">HW-CT60-88120</td>
+                  <td class="px-4 py-3.5">
+                    <span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                      Connected
+                    </span>
+                  </td>
+                  <td class="px-4 py-3.5 text-right">
+                    <div class="inline-flex items-center gap-1">
+                      <button type="button" onclick="editDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
+                      <button type="button" onclick="deleteDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 3: Zebra TC21 -->
+                <tr class="device-row hover:bg-slate-50 transition-colors" data-name="Zebra TC21 Handheld Scanner"
+                  data-model="TC21" data-serial="ZB-TC21-44319" data-status="Disconnected">
+                  <td class="px-4 py-3.5 text-[var(--color-text-muted)] font-medium">3</td>
+                  <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">Zebra TC21 Handheld Scanner</td>
+                  <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">TC21</td>
+                  <td class="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">ZB-TC21-44319</td>
+                  <td class="px-4 py-3.5">
+                    <span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                      <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                      Disconnected
+                    </span>
+                  </td>
+                  <td class="px-4 py-3.5 text-right">
+                    <div class="inline-flex items-center gap-1">
+                      <button type="button" onclick="editDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
+                      <button type="button" onclick="deleteDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 4: Datalogic Memor 10 -->
+                <tr class="device-row hover:bg-slate-50 transition-colors" data-name="Datalogic Memor 10"
+                  data-model="Memor 10" data-serial="DL-M10-33211" data-status="Connected">
+                  <td class="px-4 py-3.5 text-[var(--color-text-muted)] font-medium">4</td>
+                  <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">Datalogic Memor 10</td>
+                  <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">Memor 10</td>
+                  <td class="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">DL-M10-33211</td>
+                  <td class="px-4 py-3.5">
+                    <span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                      Connected
+                    </span>
+                  </td>
+                  <td class="px-4 py-3.5 text-right">
+                    <div class="inline-flex items-center gap-1">
+                      <button type="button" onclick="editDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
+                      <button type="button" onclick="deleteDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Row 5: Honeywell EDA51 -->
+                <tr class="device-row hover:bg-slate-50 transition-colors" data-name="Honeywell ScanPal EDA51 - Unit 02"
+                  data-model="ScanPal EDA51" data-serial="HW-EDA51-11094" data-status="Disconnected">
+                  <td class="px-4 py-3.5 text-[var(--color-text-muted)] font-medium">5</td>
+                  <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">Honeywell ScanPal EDA51 - Unit 02</td>
+                  <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">ScanPal EDA51</td>
+                  <td class="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">HW-EDA51-11094</td>
+                  <td class="px-4 py-3.5">
+                    <span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                      <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                      Disconnected
+                    </span>
+                  </td>
+                  <td class="px-4 py-3.5 text-right">
+                    <div class="inline-flex items-center gap-1">
+                      <button type="button" onclick="editDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
+                      <button type="button" onclick="deleteDevice(this)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </section>
+    </main>
+
+  </div>
+
+  <!-- JavaScript Interactivity -->
+  <script>
+    let editingRow = null;
+
+    function initDeviceManager() {
+      const form = document.getElementById('device-form');
+      if (!form) return;
+
+      const nameInput = document.getElementById('device-name');
+      const modelInput = document.getElementById('device-model');
+      const serialInput = document.getElementById('device-serial');
+      const statusInput = document.getElementById('device-status');
+      const resetBtn = document.getElementById('reset-device-btn');
+      const searchInput = document.getElementById('device-search');
+      const filterStatus = document.getElementById('filter-status');
+      const tbody = document.getElementById('devices-tbody');
+      const toast = document.getElementById('toast-notification');
+      const toastMsg = document.getElementById('toast-message');
+      const formCardTitle = document.getElementById('form-card-title');
+      const saveBtnText = document.getElementById('save-btn-text');
+
+      // Update Counts
+      function updateCounts() {
+        const rows = tbody.querySelectorAll('.device-row');
+        let total = rows.length;
+        let connected = 0;
+        let disconnected = 0;
+
+        rows.forEach(r => {
+          if (r.getAttribute('data-status') === 'Connected') {
+            connected++;
+          } else {
+            disconnected++;
+          }
+        });
+
+        document.getElementById('badge-total').textContent = `${total} Total Devices`;
+        document.getElementById('badge-connected').innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> ${connected} Connected`;
+        document.getElementById('badge-disconnected').innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-400"></span> ${disconnected} Disconnected`;
+      }
+
+      // Reset form
+      function clearForm() {
+        form.reset();
+        editingRow = null;
+        formCardTitle.textContent = "Register Device";
+        saveBtnText.textContent = "Save Device";
+      }
+
+      resetBtn.addEventListener('click', clearForm);
+
+      // Handle Save / Edit Form Submit
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const model = modelInput.value.trim() || '—';
+        const serial = serialInput.value.trim();
+        const status = statusInput.value;
+
+        if (!name || !serial) {
+          alert('Device Name and Serial Number are required!');
+          return;
+        }
+
+        const statusBadgeHTML = status === 'Connected'
+          ? `<span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Connected</span>`
+          : `<span class="status-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200"><span class="w-2 h-2 rounded-full bg-slate-400"></span> Disconnected</span>`;
+
+        if (editingRow) {
+          // Update existing row
+          editingRow.setAttribute('data-name', name);
+          editingRow.setAttribute('data-model', model);
+          editingRow.setAttribute('data-serial', serial);
+          editingRow.setAttribute('data-status', status);
+
+          editingRow.cells[1].textContent = name;
+          editingRow.cells[2].textContent = model;
+          editingRow.cells[3].textContent = serial;
+          editingRow.cells[4].innerHTML = statusBadgeHTML;
+
+          toastMsg.textContent = `Device "${name}" updated successfully!`;
+        } else {
+          // Add new row
+          const rowCount = tbody.querySelectorAll('.device-row').length + 1;
+          const tr = document.createElement('tr');
+          tr.className = "device-row hover:bg-slate-50 transition-colors";
+          tr.setAttribute('data-name', name);
+          tr.setAttribute('data-model', model);
+          tr.setAttribute('data-serial', serial);
+          tr.setAttribute('data-status', status);
+
+          tr.innerHTML = `
+            <td class="px-4 py-3.5 text-[var(--color-text-muted)] font-medium">${rowCount}</td>
+            <td class="px-4 py-3.5 font-semibold text-[var(--color-text-primary)]">${name}</td>
+            <td class="px-4 py-3.5 text-[var(--color-text-secondary)] font-medium">${model}</td>
+            <td class="px-4 py-3.5 font-mono text-xs font-semibold text-slate-700">${serial}</td>
+            <td class="px-4 py-3.5">${statusBadgeHTML}</td>
+            <td class="px-4 py-3.5 text-right">
+              <div class="inline-flex items-center gap-1">
+                <button type="button" onclick="editDevice(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-primary)] hover:bg-blue-50 transition-colors">Edit</button>
+                <button type="button" onclick="deleteDevice(this)" class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">Delete</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+          toastMsg.textContent = `Device "${name}" registered successfully!`;
+        }
+
+        toast.classList.remove('hidden');
+        clearForm();
+        updateCounts();
+        filterDevices();
+      });
+
+      // Filter and Search
+      function filterDevices() {
+        const query = searchInput.value.toLowerCase().trim();
+        const statusVal = filterStatus.value;
+        const rows = tbody.querySelectorAll('.device-row');
+
+        rows.forEach(r => {
+          const name = r.getAttribute('data-name').toLowerCase();
+          const serial = r.getAttribute('data-serial').toLowerCase();
+          const model = r.getAttribute('data-model').toLowerCase();
+          const status = r.getAttribute('data-status');
+
+          const matchesQuery = name.includes(query) || serial.includes(query) || model.includes(query);
+          const matchesStatus = (statusVal === 'ALL') || (status === statusVal);
+
+          if (matchesQuery && matchesStatus) {
+            r.style.display = '';
+          } else {
+            r.style.display = 'none';
+          }
+        });
+      }
+
+      searchInput.addEventListener('input', filterDevices);
+      filterStatus.addEventListener('change', filterDevices);
+
+      window.updateCounts = updateCounts;
+    }
+
+    function editDevice(btn) {
+      const tr = btn.closest('tr');
+      editingRow = tr;
+      document.getElementById('device-name').value = tr.getAttribute('data-name') || '';
+      document.getElementById('device-model').value = tr.getAttribute('data-model') || '';
+      document.getElementById('device-serial').value = tr.getAttribute('data-serial') || '';
+      document.getElementById('device-status').value = tr.getAttribute('data-status') || 'Connected';
+
+      document.getElementById('form-card-title').textContent = "Edit Device";
+      document.getElementById('save-btn-text').textContent = "Update Device";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteDevice(btn) {
+      const tr = btn.closest('tr');
+      const name = tr.getAttribute('data-name') || 'this device';
+      if (confirm(`Are you sure you want to remove device "${name}"?`)) {
+        tr.remove();
+        if (window.updateCounts) window.updateCounts();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initDeviceManager);
+  </script>
+</body>
+
+</html>

@@ -68,19 +68,20 @@
           </a>
         </li>
 
-        <!-- Workers -->
+        <!-- Devices -->
         <li>
-          <a href="workers-list.html"
+          <a href="devices-list.html"
             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                    text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
                    hover:text-[var(--color-text-primary)] transition-colors duration-150">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                  stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
+              <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/>
+              <path d="M9 7h6M9 11h6"/>
             </svg>
-            Workers
+            Devices
           </a>
         </li>
 
@@ -112,29 +113,6 @@
               <line x1="6" y1="20" x2="6" y2="14"/>
             </svg>
             Reports
-          </a>
-        </li>
-
-        <!-- Settings -->
-        <li>
-          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                   text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-hover-bg)]
-                   hover:text-[var(--color-text-primary)] transition-colors duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                 stroke-linejoin="round" aria-hidden="true" class="shrink-0">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
-                       a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
-                       A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
-                       l.06-.06A1.65 1.65 0 0 0 4.68 15 1.65 1.65 0 0 0 3.17 14H3a2 2 0 0 1 0-4h.09
-                       A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
-                       l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 0 1 4 0v.09
-                       a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
-                       l-.06.06A1.65 1.65 0 0 0 19.4 9 1.65 1.65 0 0 0 20.83 10H21a2 2 0 0 1 0 4h-.09
-                       a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            Settings
           </a>
         </li>
 
@@ -222,11 +200,9 @@
           <div>
             <h1 id="page-heading"
               class="text-xl sm:text-2xl font-semibold text-[var(--color-text-primary)] leading-tight">
-              Stocktaking Jobs
+              Jobs
             </h1>
-            <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-              Create and manage inventory stocktaking jobs, track live device syncing, and view discrepancy reports.
-            </p>
+            
           </div>
           <!-- Create New Job button -->
           <a href="manage-job.html" id="create-new-job-btn"
@@ -242,34 +218,6 @@
             </svg>
             Create New Job
           </a>
-        </div>
-
-        <!-- ── Live Active Device Sync Banner ────────── -->
-        <div class="mb-6 p-4 bg-gradient-to-r from-blue-900 to-slate-900 rounded-xl text-white shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 border border-slate-700">
-          <div class="flex items-center gap-3">
-            <span class="relative flex h-3 w-3 shrink-0">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-            </span>
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-sm font-semibold text-white">Live Scanner Hardware Syncing Active</h3>
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">1 Device Online</span>
-              </div>
-              <p class="text-xs text-slate-300 mt-0.5">
-                Worker <span class="text-white font-medium">Mike Wilson</span> (Device ID: <span class="font-mono text-emerald-300">DEVICE-002</span>) is currently streaming barcode packages for <span class="text-white font-medium">July 2026 Stocktake (JOB-2026-001)</span>.
-              </p>
-            </div>
-          </div>
-          <div class="flex items-center gap-4 shrink-0">
-            <div class="w-48 bg-slate-800 rounded-full h-2.5 overflow-hidden border border-slate-700">
-              <div class="bg-emerald-400 h-full rounded-full transition-all duration-500" style="width: 84.8%"></div>
-            </div>
-            <span class="text-xs font-mono font-bold text-emerald-400">84.8% (4,120/4,855)</span>
-            <a href="job-details.html" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition-colors">
-              Monitor Live
-            </a>
-          </div>
         </div>
 
         <!-- ── Job Table Container ───────────────────── -->
@@ -305,7 +253,6 @@
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Job Details & ID</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Client</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Stock Book Import</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Device Sync Status</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Status</th>
                   <th class="px-4 py-3 text-right text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider">Actions</th>
                 </tr>
@@ -329,20 +276,6 @@
                       <svg class="text-emerald-600" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
                       <span class="font-mono text-slate-800">stock_master_q3.csv</span>
                       <span class="text-[10px] text-slate-500">(1,250 items)</span>
-                    </div>
-                  </td>
-                  <td class="px-4 py-3.5">
-                    <div class="space-y-1">
-                      <div class="flex items-center justify-between text-[11px]">
-                        <span class="font-medium text-emerald-700 flex items-center gap-1">
-                          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                          DEV-ST-9842X (Rahul S.)
-                        </span>
-                        <span class="font-mono font-bold text-slate-700">78%</span>
-                      </div>
-                      <div class="w-36 bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-emerald-500 h-full rounded-full" style="width: 78%"></div>
-                      </div>
                     </div>
                   </td>
                   <td class="px-4 py-3.5">
@@ -380,17 +313,6 @@
                     </div>
                   </td>
                   <td class="px-4 py-3.5">
-                    <div class="space-y-1">
-                      <div class="flex items-center justify-between text-[11px]">
-                        <span class="font-medium text-slate-600">DEV-ST-4120Y (Amit V.)</span>
-                        <span class="font-mono text-emerald-600 font-bold">100% Synced</span>
-                      </div>
-                      <div class="w-36 bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-emerald-600 h-full rounded-full" style="width: 100%"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-4 py-3.5">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
                       Completed
                     </span>
@@ -420,17 +342,6 @@
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">
                       Skipped File Import
                     </span>
-                  </td>
-                  <td class="px-4 py-3.5">
-                    <div class="space-y-1">
-                      <div class="flex items-center justify-between text-[11px]">
-                        <span class="font-medium text-amber-700">DEV-ST-7731Z (Priya P.)</span>
-                        <span class="font-mono text-slate-700">45%</span>
-                      </div>
-                      <div class="w-36 bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-amber-500 h-full rounded-full" style="width: 45%"></div>
-                      </div>
-                    </div>
                   </td>
                   <td class="px-4 py-3.5">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
@@ -466,9 +377,6 @@
                     </div>
                   </td>
                   <td class="px-4 py-3.5">
-                    <span class="text-xs text-[var(--color-text-muted)] italic">No Device Active</span>
-                  </td>
-                  <td class="px-4 py-3.5">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
                       Scheduled
                     </span>
@@ -481,7 +389,6 @@
                     </a>
                   </td>
                 </tr>
-
               </tbody>
             </table>
           </div>
